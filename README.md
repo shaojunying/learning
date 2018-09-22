@@ -1,5 +1,6 @@
 # webpack-learning
 ## 1的运行
+(注意:需要cd到对应数字目录之下执行)
 下面的步骤用来生成pack.js文件
 > npm install
 
