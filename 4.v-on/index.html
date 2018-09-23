@@ -8,10 +8,13 @@
 </head>
 <body>
     <div id="app">
-        <a v-bind:href="url">
-            <img v-bind:src="img">
-        </a>
+        <button v-on="{mouseenter:onEnter}" @click="onClick">点我</button>
+        <form @keyup.enter="onEnter" @submit.prevent="onSubmit($event)">
+            <input type="text">
+            <input type="submit" value="提交">
+        </form>
     </div>
+
     <script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
     <script src="main.js"></script>
 </body>
