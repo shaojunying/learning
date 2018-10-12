@@ -33,16 +33,19 @@ class MongoPipeline(object):
 
     # 此处创建一个类方法
     @classmethod
+    # If present, this class method is called to create a pipeline instance from a Crawler
     def from_crawler(cls, crawler):
         return cls(
             mongo_url=crawler.settings.get('MONGO_URL'),
             mongo_db=crawler.settings.get('MONGO_DB')
         )
 
+    # 创建爬虫的时候调用该方法
     def open_spider(self, spider):
         self.client = pymongo.MongoClient(self.mongo_url)
         self.db = self.client[self.mongo_db]
 
+    # 处理信息的时候调用
     def process_item(self, item, spider):
         name = item.__class__.__name__
         self.db[name].insert(dict(item))
