@@ -6,9 +6,12 @@
 using namespace std;
 
 
-void show(string& curr_string,ofstream& saveFile){
-    saveFile<<curr_string<<endl;
-    curr_string.clear();
+void show(string& curr_string,ofstream& saveFile,int& state){
+    if (curr_string.length()!=0) {
+        saveFile << curr_string << endl;
+        curr_string.clear();
+    }
+    state = 0;
 }
 /*
  * 识别每个单词符号,用记号的形式输出每个单词符号
@@ -24,13 +27,25 @@ void lexical_analysis(){
     while (true) {
         string string1;
         getline(cin, string1);
+        if (state == 17){
+            state = 0;
+            curr_string.clear();
+        }
+        saveFile<<curr_string<<endl;
+        curr_string.clear();
         if (string1 == "bye") {
+            if (curr_string.length()!=0){
+                show(curr_string,saveFile,state);
+            }
             break;
         }
         for (int i = 0; i < string1.length(); ++i) {
             char a = string1[i];
             if (isspace(string1[i])) {
                 /*遇到空白字符*/
+                if (curr_string.length()!=0){
+                    show(curr_string,saveFile,state);
+                }
                 continue;
             }
             switch (state) {
@@ -55,21 +70,38 @@ void lexical_analysis(){
                                 curr_string.push_back(a);
                                 state = 10;
                                 break;
+                            case '+':
+                                curr_string.push_back(a);
+                                state = 14;
+                                break;
+                            case '-':
+                                curr_string.push_back(a);
+                                state = 13;
+                                break;
+                            case '*':
+                                curr_string.push_back(a);
+                                state = 15;
+                                break;
                             case '/':
                                 curr_string.push_back(a);
                                 state = 11;
                                 break;
+                            case '=':
                             default:
+                                /*此处说明输入的内容无效,不用做任何处理*/
                                 break;
                         }
                     }
                     break;
                 case 1:
                     if (isalpha(a) || isdigit(a)) {
+                        /*此处一直循环读取字母和数字*/
                         curr_string.push_back(a);
                         state = 1;
                     } else {
-                        show(curr_string,saveFile);
+                        /*遇到其他内容,需要输出并回退一格*/
+                        show(curr_string,saveFile,state);
+                        i--;
                     }
                     break;
                 case 2:
@@ -83,7 +115,9 @@ void lexical_analysis(){
                         curr_string.push_back(a);
                         state = 2;
                     } else {
-                        show(curr_string,saveFile);
+                        /*需要回退*/
+                        show(curr_string,saveFile,state);
+                        i--;
                     }
                     break;
                 case 3:
@@ -100,7 +134,9 @@ void lexical_analysis(){
                         curr_string.push_back(a);
                         state = 5;
                     } else {
-                        show(curr_string,saveFile);
+                        /*回退*/
+                        show(curr_string,saveFile,state);
+                        i--;
                     }
                     break;
                 case 5:
@@ -117,48 +153,163 @@ void lexical_analysis(){
                         curr_string.push_back(a);
                         state = 7;
                     }else {
-                        show(curr_string,saveFile);
-
+                        /*回退*/
+                        show(curr_string,saveFile,state);
+                        i--;
                     }
                     break;
                 case 8:
                     switch (a) {
                         case '=':
-                            show(curr_string,saveFile);
+                            show(curr_string,saveFile,state);
                             break;
                         case '>':
-                            show(curr_string,saveFile);
+                            show(curr_string,saveFile,state);
                             break;
                         default:
-                            show(curr_string,saveFile);
+                            /*回退*/
+                            show(curr_string,saveFile,state);
+                            i--;
                             break;
                     }
                     break;
                 case 9:
                     if (a == '=') {
-                        show(curr_string,saveFile);
+                        curr_string.push_back(a);
+                        show(curr_string,saveFile,state);
                     } else{
-                        show(curr_string,saveFile);
+                        /*回退*/
+                        show(curr_string,saveFile,state);
+                        i--;
                     }
                     break;
                 case 10:
                     if (a == '=') {
-                        show(curr_string,saveFile);
+                        curr_string.push_back(a);
+                        show(curr_string,saveFile,state);
                     } else{
-                        show(curr_string,saveFile);
+                        /*回退*/
+                        show(curr_string,saveFile,state);
+                        i--;
                     }
                     break;
                 case 11:
-                    if (a == '*') {
-                        curr_string.push_back(a);
-                        state = 12;
-                    } else {
-                        show(curr_string,saveFile);
+                    /*此处遇到了/符号,可能要开始处理注释*/
+                    switch (a){
+                        case '*':
+                            /*多行注释的开始*/
+                            curr_string.clear();
+                            state = 16;
+                            break;
+                        case '/':
+                            /*单行注释的开始*/
+                            curr_string.push_back(a);
+                            curr_string.clear();
+                            state = 17;
+                            break;
+                        case '=':
+                            /*简写的除法*/
+                            curr_string.push_back(a);
+                            state = 18;
+                            break;
+                        default:
+                            show(curr_string,saveFile,state);
+                            i--;
+                            break;
                     }
                     break;
-                case 12:
-                    show(curr_string,saveFile);
+                    /* 初始state输入了减号,需要判断
+                     * -
+                     * -=
+                     * --
+                     * 负数
+                     * */
+                case 13:
+                    if (isdigit(a)){
+                        curr_string.push_back(a);
+                        state = 2;
+                    } else{
+                        switch (a){
+                            case '-':
+                                curr_string.push_back(a);
+                                show(curr_string,saveFile,state);
+                                break;
+                            case '=':
+                                curr_string.push_back(a);
+                                show(curr_string,saveFile,state);
+                                break;
+                            default:
+                                show(curr_string,saveFile,state);
+                                i--;
+                                break;
+                        }
+                    }
                     break;
+                case 14:
+                    if (isdigit(a)){
+                        curr_string.push_back(a);
+                        state = 2;
+                    } else{
+                        switch (a){
+                            case '+':
+                                curr_string.push_back(a);
+                                show(curr_string,saveFile,state);
+                                break;
+                            case '=':
+                                curr_string.push_back(a);
+                                show(curr_string,saveFile,state);
+                                break;
+                            default:
+                                show(curr_string,saveFile,state);
+                                i--;
+                                break;
+                        }
+                    }
+                    break;
+                case 15:
+                    if (isdigit(a)){
+                        curr_string.push_back(a);
+                        state = 2;
+                    } else{
+                        switch (a){
+                            case '=':
+                                curr_string.push_back(a);
+                                show(curr_string,saveFile,state);
+                                break;
+                            default:
+                                show(curr_string,saveFile,state);
+                                i--;
+                                break;
+                        }
+                    }
+                    break;
+                case 16:
+                    /*多行注释*/
+                    if (a=='*'){
+                        curr_string.clear();
+                        state=19;
+                    }
+                    break;
+                case 17:
+                    /*单行注释
+                     * 我们这里不进行处理,只需要在每一次读取完一行之后判断是否处于17,
+                     * 如果是,就重置为0
+                     * */
+                    curr_string.clear();
+                    break;
+                case 18:
+                    /*简写除法/= */
+                    break;
+                case 19:
+                    switch (a){
+                        case '*':
+                            state = 19;
+                            break;
+                        case  '/':
+                            state = 0;
+                            break;
+                        default:break;
+                    }
                 default:
                     break;
             }
