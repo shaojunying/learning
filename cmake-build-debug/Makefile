@@ -149,33 +149,6 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles\complication_principle.dir\build.make CMakeFiles/complication_principle.dir/main.cpp.s
 .PHONY : main.cpp.s
 
-other.obj: other.cpp.obj
-
-.PHONY : other.obj
-
-# target to build an object file
-other.cpp.obj:
-	$(MAKE) -f CMakeFiles\complication_principle.dir\build.make CMakeFiles/complication_principle.dir/other.cpp.obj
-.PHONY : other.cpp.obj
-
-other.i: other.cpp.i
-
-.PHONY : other.i
-
-# target to preprocess a source file
-other.cpp.i:
-	$(MAKE) -f CMakeFiles\complication_principle.dir\build.make CMakeFiles/complication_principle.dir/other.cpp.i
-.PHONY : other.cpp.i
-
-other.s: other.cpp.s
-
-.PHONY : other.s
-
-# target to generate assembly for a file
-other.cpp.s:
-	$(MAKE) -f CMakeFiles\complication_principle.dir\build.make CMakeFiles/complication_principle.dir/other.cpp.s
-.PHONY : other.cpp.s
-
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -188,9 +161,6 @@ help:
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
-	@echo ... other.obj
-	@echo ... other.i
-	@echo ... other.s
 .PHONY : help
 
 

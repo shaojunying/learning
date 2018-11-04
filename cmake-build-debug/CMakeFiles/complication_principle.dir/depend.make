@@ -3,5 +3,3 @@
 
 CMakeFiles/complication_principle.dir/main.cpp.obj: ../main.cpp
 
-CMakeFiles/complication_principle.dir/other.cpp.obj: ../other.cpp
-
