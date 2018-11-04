@@ -5,6 +5,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "C:/Users/shao/Documents/codingProject/complication_principle/main.cpp" "C:/Users/shao/Documents/codingProject/complication_principle/cmake-build-debug/CMakeFiles/complication_principle.dir/main.cpp.obj"
+  "C:/Users/shao/Documents/codingProject/complication_principle/other.cpp" "C:/Users/shao/Documents/codingProject/complication_principle/cmake-build-debug/CMakeFiles/complication_principle.dir/other.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
