@@ -1,12 +1,19 @@
-#include <iostream>
-using namespace std;
+int a = 2.E-2
+int a = 2.1E
+int a = 2.1agssag;
+int a = 1bhjsbhsd
+ /*
 
+ sjhishuisdhsdyugdsvwqevyweguy1雨3用87
+ */
+ int q=1.1.1;
+ int q=1.1E.1;
 
-int main() {
-    for (int i = 0;i<10;i++){
-        if(i == 10){
-            cout<<i<<endl;
-        }
-    }
-    return 0;
-}
+ int main() {
+     for (int i = 0;i<10;i++){
+         if(i == 10){
+             cout<<i<<endl;
+         }
+     }
+     return 0;
+ }
