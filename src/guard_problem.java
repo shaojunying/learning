@@ -5,24 +5,41 @@ import java.util.Arrays;
  */
 public class guard_problem {
 
-    static int m = 2;
-    static int n = 2;
+    private static int m = 10;
+    private static int n = 10;
 
-    static int guard[][] = new int[m][n];
+    private static int monitored[][] = new int[m][n];
+    private static int guard[][] = new int[m][n];
+    private static int bestGuard[][] = new int[m][n];
+
+    /*假设每一个机器人只能看到左中右或者上中下,都是1*3的长条,那么需要n*m/3+1个长条,最后会剩余一个1*1或者1*2或者2*2的方块,补一个就足够
+    * 所以初始最小守卫数量是n*m/3+2个*/
+    private static int minGuardCount = n*m/3+2;
+    private static int curGuardCount = 0;
+    private static int curMonitorRoomCount = 0;
 
 
-    static int helperInt[][] = new int[][]{
-            {-1,0},{1,0},{0,-1},{0,1}
+    private static int middleRightDown[][] = new int[][]{
+            {1,0},{0,0},{0,1}
     };
 
 
-    static int helperInt2[][] = new int[][]{
+    private static int upDownLeftRightMiddle[][] = new int[][]{
             {0,0},{-1,0},{1,0},{0,-1},{0,1}
     };
 
 
     public static void main(String[] args) {
+
+        /*monitored[i][j]>0表示当前节点被几个警卫监视
+        * =0表示当前节点没有被警卫监视*/
+        /*monitor[i][j]=1表示当前节点有警卫*/
+
         helper(new int[]{0,0});
+        System.out.println("最少需要"+minGuardCount+"个警卫");
+        for (int[] ints : bestGuard) {
+            System.out.println(Arrays.toString(ints));
+        }
     }
 
     /*
@@ -33,60 +50,87 @@ public class guard_problem {
     * 返回,找下一个防止警卫的地方
     * */
 
-    static void putGuard(int[] nums){
-        guard[nums[0]][nums[1]] = -1;
-
-//        周围的节点都需要设置为已经被守卫
-        for (int[] ints : helperInt) {
+    private static void putGuard(int[] nums){
+        guard[nums[0]][nums[1]] = 1;
+        curGuardCount++;
+//        上下左右中的节点都需要设置为已经被守卫
+        for (int[] ints : upDownLeftRightMiddle) {
             int p = nums[0]+ints[0];
             int q = nums[1]+ints[1];
-            if (p>-1&&p<m&&q>-1&&q<n&&guard[p][q]!=-1){
-                guard[p][q] ++;
-            }
-        }
-    }
-    static void cancelGuard(int[] nums){
-        guard[nums[0]][nums[1]] = 0;
-
-        for (int[] ints : helperInt) {
-            int p = nums[0]+ints[0];
-            int q = nums[1]+ints[1];
-            if (p>-1&&p<m&&q>-1&&q<n&&guard[p][q] != -1){
-                guard[p][q]--;
-            }
-        }
-
-    }
-
-    static int[] findNextPoint(){
-
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (guard[i][j] == 0){
-                    return new int[]{i,j};
+            if (p>-1&&p<m&&q>-1&&q<n){
+                monitored[p][q] ++;
+                if (monitored[p][q] == 1){
+                    curMonitorRoomCount ++;
                 }
             }
         }
-        return null;
+    }
+    private static void cancelGuard(int[] nums){
+        guard[nums[0]][nums[1]] = 0;
+        curGuardCount--;
+        for (int[] ints : upDownLeftRightMiddle) {
+            int p = nums[0]+ints[0];
+            int q = nums[1]+ints[1];
+            if (p>-1&&p<m&&q>-1&&q<n){
+                monitored[p][q]--;
+                if (monitored[p][q] == 0){
+                    curMonitorRoomCount --;
+                }
+            }
+        }
+
+    }
+
+    private static int[] findNextPoint(){
+
+        int i=0;
+        int j=0;
+
+        while (true){
+            j++;
+            if (j>=n){
+                j=0;
+                i++;
+            }
+            if (i>=m){
+                return null;
+            }
+            if (monitored[i][j]==0){
+                return new int[]{i,j};
+            }
+        }
     }
 
 //    代表我们需要给当前nums对应的方框寻找一个警卫
     private static void helper(int[] nums) {
+
+        if (curGuardCount+(m*n-curMonitorRoomCount+4)/5 >= minGuardCount){
+            return;
+        }
+
 /*说明当前nums对应的位置需要警卫,需要从周围5个点中选择一个放上警卫*/
-
-
-        for (int[] ints : helperInt2) {
+        for (int[] ints : middleRightDown) {
             int p = nums[0]+ints[0];
             int q = nums[1]+ints[1];
             if (p>-1&&p<m&&q>-1&&q<n){
 //                给当前p,q添加一个警力
                 putGuard(new int[]{p,q});
-
+                /*给当前节点放置警力之后找到下一个没有被警力覆盖的地方*/
                 int[] temp = findNextPoint();
                 if (temp != null){
                     helper(temp);
+                }else {
+                    if (curGuardCount < minGuardCount) {
+                        for (int i = 0; i < m; i++) {
+                            for (int j = 0; j < n; j++) {
+                                bestGuard[i][j] = guard[i][j];
+                            }
+                        }
+                        minGuardCount = curGuardCount;
+//                        System.out.println("当前警力情况"+ Arrays.deepToString(guard));
+//                        System.out.println("当前监视情况"+ Arrays.deepToString(monitored));
+                    }
                 }
-                System.out.println(Arrays.deepToString(guard));
                 cancelGuard(new int[]{p,q});
             }
         }
