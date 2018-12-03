@@ -38,10 +38,10 @@ cmake_force:
 SHELL = cmd.exe
 
 # The CMake executable.
-CMAKE_COMMAND = C:\Users\shao\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\182.4892.24\bin\cmake\win\bin\cmake.exe
+CMAKE_COMMAND = C:\Users\shao\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\183.4284.156\bin\cmake\win\bin\cmake.exe
 
 # The command to remove a file.
-RM = C:\Users\shao\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\182.4892.24\bin\cmake\win\bin\cmake.exe -E remove -f
+RM = C:\Users\shao\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\183.4284.156\bin\cmake\win\bin\cmake.exe -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -58,7 +58,7 @@ CMAKE_BINARY_DIR = C:\Users\shao\Documents\codingProject\complication_principle\
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	C:\Users\shao\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\182.4892.24\bin\cmake\win\bin\cmake.exe -E echo "No interactive CMake dialog available."
+	C:\Users\shao\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\183.4284.156\bin\cmake\win\bin\cmake.exe -E echo "No interactive CMake dialog available."
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -69,7 +69,7 @@ edit_cache/fast: edit_cache
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	C:\Users\shao\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\182.4892.24\bin\cmake\win\bin\cmake.exe -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	C:\Users\shao\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\183.4284.156\bin\cmake\win\bin\cmake.exe -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -149,6 +149,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles\complication_principle.dir\build.make CMakeFiles/complication_principle.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+syntax_analysis.obj: syntax_analysis.cpp.obj
+
+.PHONY : syntax_analysis.obj
+
+# target to build an object file
+syntax_analysis.cpp.obj:
+	$(MAKE) -f CMakeFiles\complication_principle.dir\build.make CMakeFiles/complication_principle.dir/syntax_analysis.cpp.obj
+.PHONY : syntax_analysis.cpp.obj
+
+syntax_analysis.i: syntax_analysis.cpp.i
+
+.PHONY : syntax_analysis.i
+
+# target to preprocess a source file
+syntax_analysis.cpp.i:
+	$(MAKE) -f CMakeFiles\complication_principle.dir\build.make CMakeFiles/complication_principle.dir/syntax_analysis.cpp.i
+.PHONY : syntax_analysis.cpp.i
+
+syntax_analysis.s: syntax_analysis.cpp.s
+
+.PHONY : syntax_analysis.s
+
+# target to generate assembly for a file
+syntax_analysis.cpp.s:
+	$(MAKE) -f CMakeFiles\complication_principle.dir\build.make CMakeFiles/complication_principle.dir/syntax_analysis.cpp.s
+.PHONY : syntax_analysis.cpp.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -161,6 +188,9 @@ help:
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
+	@echo ... syntax_analysis.obj
+	@echo ... syntax_analysis.i
+	@echo ... syntax_analysis.s
 .PHONY : help
 
 

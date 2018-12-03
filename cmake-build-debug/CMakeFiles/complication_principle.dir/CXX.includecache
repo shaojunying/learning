@@ -6,17 +6,9 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/shao/Documents/codingProject/complication_principle/main.cpp
+C:/Users/shao/Documents/codingProject/complication_principle/syntax_analysis.cpp
+list
+-
 iostream
--
-fstream
--
-cstring
--
-cctype
--
-fstream
--
-assert.h
 -
 

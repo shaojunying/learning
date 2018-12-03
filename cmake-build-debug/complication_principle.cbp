@@ -85,6 +85,9 @@
 		<Unit filename="C:/Users/shao/Documents/codingProject/complication_principle/main.cpp">
 			<Option target="complication_principle"/>
 		</Unit>
+		<Unit filename="C:/Users/shao/Documents/codingProject/complication_principle/syntax_analysis.cpp">
+			<Option target="complication_principle"/>
+		</Unit>
 		<Unit filename="C:/Users/shao/Documents/codingProject/complication_principle/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

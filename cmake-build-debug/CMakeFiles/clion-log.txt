@@ -1,4 +1,4 @@
-C:\Users\shao\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\182.4892.24\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" C:\Users\shao\Documents\codingProject\complication_principle
+C:\Users\shao\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\183.4284.156\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" C:\Users\shao\Documents\codingProject\complication_principle
 -- Configuring done
 -- Generating done
 -- Build files have been written to: C:/Users/shao/Documents/codingProject/complication_principle/cmake-build-debug

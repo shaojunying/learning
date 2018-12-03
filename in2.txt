@@ -6,7 +6,7 @@ int a = 1bhjsbhsd
 
  sjhishuisdhsdyugdsvwqevyweguy1雨3用87
  */
- int q=1.1.1;
+ int 2q=1.1.1;
  int q=1.1E.1;
 
  int main() {
