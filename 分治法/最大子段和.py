@@ -28,7 +28,7 @@ def helper(nums, start, end):
 
 
 def main():
-    nums = [random.randint(-1,1) for _ in range(100)]
+    nums = [random.randint(-1, 1) for _ in range(100)]
     print(nums)
     print(helper(nums, 0, 100 - 1))
 

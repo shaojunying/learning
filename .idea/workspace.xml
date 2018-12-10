@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5c268ad7-8c59-4cef-acbd-ce98e41ffe8e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/分治法/棋盘覆盖.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/分治法/元素选择.py" beforeDir="false" afterPath="$PROJECT_DIR$/分治法/元素选择.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/分治法/邮局选址问题.py" beforeDir="false" afterPath="$PROJECT_DIR$/分治法/邮局选址问题.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/分治法/最大子段和.py" beforeDir="false" afterPath="$PROJECT_DIR$/分治法/最大子段和.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,7 +15,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/$.coverage" NAME="邮局选址问题 Coverage Results" MODIFIED="1544443182112" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/分治法" />
+    <SUITE FILE_PATH="coverage/$.coverage" NAME="元素选择 Coverage Results" MODIFIED="1544450905742" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/分治法" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -32,24 +33,44 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/分治法/元素选择.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="22" column="17" lean-forward="true" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
+            <state relative-caret-position="167">
+              <caret line="31" column="14" lean-forward="true" selection-start-line="31" selection-start-column="14" selection-end-line="31" selection-end-column="14" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/分治法/最大子段和.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="347">
+              <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/分治法/邮局选址问题.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="348">
-              <caret line="61" lean-forward="true" selection-start-line="61" selection-end-line="61" />
-              <folding>
-                <element signature="e#225#950#0" />
-                <element signature="e#1018#1048#0" />
-              </folding>
+            <state relative-caret-position="466">
+              <caret line="45" column="11" lean-forward="true" selection-start-line="45" selection-start-column="11" selection-end-line="45" selection-end-column="11" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/分治法/棋盘覆盖.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="247">
+              <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
             </state>
           </provider>
         </entry>
@@ -70,8 +91,15 @@
       <find>t</find>
       <find>t2</find>
       <find>25</find>
+      <find>mid_size</find>
+      <find>] = fill_num</find>
+      <find>, fill_num</find>
       <find>print</find>
     </findStrings>
+    <replaceStrings>
+      <replace>size</replace>
+      <replace>] = cur_fill_num</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -88,8 +116,10 @@
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/horseWalk.py" />
         <option value="$PROJECT_DIR$/src/horseWalk.java" />
-        <option value="$PROJECT_DIR$/分治法/元素选择.py" />
         <option value="$PROJECT_DIR$/分治法/邮局选址问题.py" />
+        <option value="$PROJECT_DIR$/分治法/元素选择.py" />
+        <option value="$PROJECT_DIR$/分治法/最大子段和.py" />
+        <option value="$PROJECT_DIR$/分治法/棋盘覆盖.py" />
       </list>
     </option>
   </component>
@@ -97,10 +127,10 @@
     <servers />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="487" />
-    <option name="y" value="83" />
-    <option name="width" value="1940" />
-    <option name="height" value="1049" />
+    <option name="x" value="431" />
+    <option name="y" value="-9" />
+    <option name="width" value="1230" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -130,7 +160,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544443230062" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544450918726" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Project" />
@@ -155,7 +185,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.邮局选址问题">
+  <component name="RunManager" selected="Python.元素选择">
     <configuration name="guard_problem" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="guard_problem" />
       <module name="算法分析与设计" />
@@ -165,13 +195,6 @@
     </configuration>
     <configuration name="horseWalk" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="horseWalk" />
-      <module name="算法分析与设计" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="maze" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="maze" />
       <module name="算法分析与设计" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -221,20 +244,42 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="棋盘覆盖" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="算法分析与设计" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/分治法" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/分治法/棋盘覆盖.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
-      <item itemvalue="Application.maze" />
       <item itemvalue="Application.guard_problem" />
       <item itemvalue="Application.horseWalk" />
       <item itemvalue="Python.元素选择" />
       <item itemvalue="Python.邮局选址问题" />
+      <item itemvalue="Python.棋盘覆盖" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.邮局选址问题" />
         <item itemvalue="Python.元素选择" />
+        <item itemvalue="Python.棋盘覆盖" />
+        <item itemvalue="Python.邮局选址问题" />
         <item itemvalue="Application.horseWalk" />
         <item itemvalue="Application.guard_problem" />
-        <item itemvalue="Application.maze" />
       </list>
     </recent_temporary>
   </component>
@@ -266,12 +311,12 @@
       <workItem from="1544092068723" duration="1208000" />
       <workItem from="1544368866759" duration="24000" />
       <workItem from="1544404879809" duration="685000" />
-      <workItem from="1544405670284" duration="7830000" />
+      <workItem from="1544405670284" duration="14984000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="57639000" />
+    <option name="totallyTimeSpent" value="64793000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -291,7 +336,7 @@
       <window_info id="UI Designer" order="2" />
       <window_info id="Capture Tool" order="3" />
       <window_info id="Favorites" order="4" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="5" visible="true" weight="0.13069706" />
+      <window_info active="true" content_ui="combo" id="Project" order="5" visible="true" weight="0.13069706" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.51448274" />
       <window_info anchor="bottom" id="Version Control" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="1" sideWeight="0.49932975" weight="0.32947975" />
@@ -299,8 +344,8 @@
       <window_info anchor="bottom" id="Database Changes" order="3" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Find" order="5" weight="0.32658958" />
-      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.49865952" visible="true" weight="0.3699422" />
-      <window_info anchor="bottom" id="Debug" order="7" sideWeight="0.49932975" weight="0.6257225" />
+      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.49865952" weight="0.56213874" />
+      <window_info anchor="bottom" id="Debug" order="7" sideWeight="0.49932975" weight="0.52745664" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="10" sideWeight="0.49932975" weight="0.32947975" />
@@ -363,6 +408,16 @@
           <line>37</line>
           <properties />
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/分治法/棋盘覆盖.py</url>
+          <line>38</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/分治法/棋盘覆盖.py</url>
+          <line>13</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -439,9 +494,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/分治法/邮局选址问题.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="466">
+          <caret line="45" column="11" lean-forward="true" selection-start-line="45" selection-start-column="11" selection-end-line="45" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/分治法/最大子段和.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="627">
+        <state relative-caret-position="347">
           <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
@@ -449,20 +511,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/分治法/元素选择.py">
+    <entry file="file://$PROJECT_DIR$/分治法/棋盘覆盖.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="22" column="17" lean-forward="true" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
+        <state relative-caret-position="247">
+          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/分治法/邮局选址问题.py">
+    <entry file="file://$PROJECT_DIR$/分治法/元素选择.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="348">
-          <caret line="61" lean-forward="true" selection-start-line="61" selection-end-line="61" />
+        <state relative-caret-position="167">
+          <caret line="31" column="14" lean-forward="true" selection-start-line="31" selection-start-column="14" selection-end-line="31" selection-end-column="14" />
           <folding>
-            <element signature="e#225#950#0" />
-            <element signature="e#1018#1048#0" />
+            <element signature="e#0#13#0" expanded="true" />
           </folding>
         </state>
       </provider>
