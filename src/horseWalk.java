@@ -1,7 +1,5 @@
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Stack;
-import java.util.TreeMap;
+import javax.swing.text.html.parser.Entity;
+import java.util.*;
 
 public class horseWalk {
 
@@ -11,7 +9,7 @@ public class horseWalk {
             {-1,-2},{-2,-1},
             {1,-2},{-2,1}};
 
-    private int n = 8;
+    private int n = 6;
 
     private boolean[][] visited = new boolean[n][n];
 
@@ -21,7 +19,7 @@ public class horseWalk {
         int[] start = {0,0};
         horseWalkHelper(start);
         for (int[] aPath : path) {
-            System.out.print(Arrays.toString(aPath) + ",");
+            System.out.print(String.valueOf(aPath[0]*n+aPath[1]+1) + ",");
         }
         System.out.println();
     }
@@ -52,19 +50,17 @@ public class horseWalk {
             int q = node[1]+horseDirection[1];
 
 //            在这里记录每个点接下来的可走路径,每次找下次可走路径最少的那一条
-            TreeMap<int[],Integer> step = new TreeMap<>();
+
 
             if (p>=0&&p<visited.length&&q>=0&&q<visited.length&&!visited[p][q]){
-
-                step.put(new int[]{p,q}, computeSteps(new int[]{p,q}));
-
-                if (horseWalkHelper(new int[]{p,q}))
+                if (horseWalkHelper(new int[]{p,q})){
                     return true;
+                }
             }
 
-            while (true){
-                step.firstKey();
-            }
+
+
+
         }
         int[] a = path.pop();
         visited[a[0]][a[1]] = false;
