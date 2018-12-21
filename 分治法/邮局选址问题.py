@@ -54,6 +54,7 @@ def main():
     y_list = list(y_list)
     quick_sort(x_list)
     quick_sort(y_list)
+    print(positions)
     print("邮局应该选择的位置是: (", x_list[mid], ",", y_list[mid], ")")
 
 
