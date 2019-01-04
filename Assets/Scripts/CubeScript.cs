@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using UnityEngine;
 using Random = System.Random;
 
@@ -147,7 +149,7 @@ public class CubeScript : MonoBehaviour
 		/*
 		 * 恢复魔方
 		 */
-		if (HelperScript.Reseting)
+		if (HelperScript.Reseting&&!HelperScript.Rotating)
 		{
 			for (int i=0;i<cubes.Length;i++)
 			{
@@ -160,6 +162,7 @@ public class CubeScript : MonoBehaviour
 				cube.transform.localPosition = new Vector3(x,y,z);
 			}
 
+			HelperScript.Shuffling = false;
 			HelperScript.Reseting = false;
 		}
 	}
@@ -248,5 +251,25 @@ public class CubeScript : MonoBehaviour
 			tempCubes[i].name = trueIndex.ToString();
 			cubes[trueIndex] = tempCubes[i];
 		}
+	}
+	/*
+	 * 通过调用python脚本获得魔方的解
+	 */
+	private String getSolution(String cubeString)
+	{
+		string progToRun = "C:\\Users\\shao\\Documents\\codingProject\\ConsoleApplication2\\ConsoleApplication2\\test.py";
+		char[] spliter = { '\r' };
+		Process proc = new Process();
+		proc.StartInfo.FileName = "python.exe";
+		proc.StartInfo.RedirectStandardOutput = true;
+		proc.StartInfo.UseShellExecute = false;
+            
+		//文件路径+参数集合
+		proc.StartInfo.Arguments = string.Concat(progToRun, " ", cubeString);
+		proc.Start();
+		StreamReader sReader = proc.StandardOutput;
+		string[] output = sReader.ReadToEnd().Split(spliter);
+		//取出计算结果
+		return output[0];
 	}
 }
