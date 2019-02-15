@@ -18,6 +18,7 @@
   "homepage": "https://github.com/shaojunying/MyTodoList#readme",
   "dependencies": {
     "jquery": "^3.3.1",
-    "normalize.css": "^8.0.1"
+    "normalize.css": "^8.0.1",
+    "store.js": "^1.0.4"
   }
 }

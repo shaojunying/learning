@@ -9,53 +9,12 @@
 <body>
 <div class="container"> <!--总容器开始-->
     <h1>我的Todo</h1>
-    <div class="add-task">
-        <input type="text" placeholder="Remember coding...">
+    <form class="add-task">
+        <input name="content" type="text" placeholder="Remember coding..."
+        autofocus autocomplete="off">
         <button type="submit">submit</button>
-    </div>
+    </form>
     <div class="task-list"><!--清单列表开始-->
-        <div class="task-item"><!--任务开始-->
-            <span><input type="checkbox"></span>
-            <span class="task-content">item content 1</span>
-            <span>delete</span>
-            <span>detail</span>
-        </div><!--任务结束-->
-        <div class="task-item"><!--任务开始-->
-            <span><input type="checkbox"></span>
-            <span class="task-content">item content 1</span>
-            <span>delete</span>
-            <span>detail</span>
-        </div><!--任务结束-->
-        <div class="task-item"><!--任务开始-->
-            <span><input type="checkbox"></span>
-            <span class="task-content">item content 1</span>
-            <span>delete</span>
-            <span>detail</span>
-        </div><!--任务结束-->
-        <div class="task-item"><!--任务开始-->
-            <span><input type="checkbox"></span>
-            <span class="task-content">item content 1</span>
-            <span>delete</span>
-            <span>detail</span>
-        </div><!--任务结束-->
-        <div class="task-item"><!--任务开始-->
-            <span><input type="checkbox"></span>
-            <span class="task-content">item content 1</span>
-            <span>delete</span>
-            <span>detail</span>
-        </div><!--任务结束-->
-        <div class="task-item"><!--任务开始-->
-            <span><input type="checkbox"></span>
-            <span class="task-content">item content 1</span>
-            <span>delete</span>
-            <span>detail</span>
-        </div><!--任务结束-->
-        <div class="task-item"><!--任务开始-->
-            <span><input type="checkbox"></span>
-            <span class="task-content">item content 1</span>
-            <span>delete</span>
-            <span>detail</span>
-        </div><!--任务结束-->
     </div><!--清单列表结束-->
     <div class="task-detail-mask"></div>
     <div class="task-detail"><!--任务详情开始-->
@@ -74,6 +33,7 @@
     </div><!--任务详情结束-->
 </div><!--总容器结束-->
 <script src="node_modules/jquery/dist/jquery.js"></script>
+<script src="node_modules/store.js/store.js"></script>
 <script src="js/base.js"></script>
 </body>
 </html>
