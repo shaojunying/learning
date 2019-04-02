@@ -1,6 +1,6 @@
-package com.shao.DAO;
+package com.shao.Repository;
 
-import com.shao.Entity.User;
+import com.shao.Domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
