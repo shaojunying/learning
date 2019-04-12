@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 /**
- * Created by shao on 2019/4/3 16:09.
+ * Created by shao on 2019/4/12 17:06.
  */
 @Entity
 public class Exerises {
@@ -17,7 +17,7 @@ public class Exerises {
     private long chapterId;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     public long getId() {
         return id;
     }
@@ -27,7 +27,7 @@ public class Exerises {
     }
 
     @Basic
-    @Column(name = "content")
+    @Column(name = "content", nullable = false, length = -1)
     public String getContent() {
         return content;
     }
@@ -37,7 +37,7 @@ public class Exerises {
     }
 
     @Basic
-    @Column(name = "answer")
+    @Column(name = "answer", nullable = true, length = -1)
     public String getAnswer() {
         return answer;
     }
@@ -47,7 +47,7 @@ public class Exerises {
     }
 
     @Basic
-    @Column(name = "chapter_id")
+    @Column(name = "chapter_id", nullable = false)
     public long getChapterId() {
         return chapterId;
     }

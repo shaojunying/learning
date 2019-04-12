@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 /**
- * Created by shao on 2019/4/3 16:09.
+ * Created by shao on 2019/4/12 17:06.
  */
 @Entity
 @Table(name = "user_has_course", schema = "onlineplatform", catalog = "")
@@ -14,7 +14,7 @@ public class UserHasCourse {
     private long courseId;
 
     @Id
-    @Column(name = "User_id")
+    @Column(name = "User_id", nullable = false)
     public long getUserId() {
         return userId;
     }
@@ -24,7 +24,7 @@ public class UserHasCourse {
     }
 
     @Id
-    @Column(name = "Course_id")
+    @Column(name = "Course_id", nullable = false)
     public long getCourseId() {
         return courseId;
     }

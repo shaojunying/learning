@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 /**
- * Created by shao on 2019/4/3 16:09.
+ * Created by shao on 2019/4/12 17:06.
  */
 @Entity
 public class Course {
@@ -17,7 +17,7 @@ public class Course {
     private long descriptionId;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     public long getId() {
         return id;
     }
@@ -27,7 +27,7 @@ public class Course {
     }
 
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 45)
     public String getName() {
         return name;
     }
@@ -37,7 +37,7 @@ public class Course {
     }
 
     @Basic
-    @Column(name = "description")
+    @Column(name = "description", nullable = true, length = 45)
     public String getDescription() {
         return description;
     }
@@ -47,7 +47,7 @@ public class Course {
     }
 
     @Basic
-    @Column(name = "description_id")
+    @Column(name = "description_id", nullable = false)
     public long getDescriptionId() {
         return descriptionId;
     }

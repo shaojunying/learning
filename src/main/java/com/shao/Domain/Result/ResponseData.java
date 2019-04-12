@@ -9,6 +9,8 @@ public class ResponseData {
 
     private String rspMsg = "操作成功";
 
+    private Object data;
+
     public ResponseData() {
     }
 
@@ -20,6 +22,21 @@ public class ResponseData {
     public ResponseData(ExceptionMsg msg){
         this.rspCode=msg.getCode();
         this.rspMsg=msg.getMsg();
+    }
+    public ResponseData(ExceptionMsg msg,Object data){
+        this.rspCode=msg.getCode();
+        this.rspMsg=msg.getMsg();
+        this.data = data;
+    }
+
+    public ResponseData(Object data) {
+        this(ExceptionMsg.SUCCESS,data);
+    }
+
+    public ResponseData(String rspCode, String rspMsg, Object data) {
+        this.rspCode = rspCode;
+        this.rspMsg = rspMsg;
+        this.data = data;
     }
 
     public String getRspCode() {
@@ -36,5 +53,13 @@ public class ResponseData {
 
     public void setRspMsg(String rspMsg) {
         this.rspMsg = rspMsg;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
     }
 }

@@ -1,20 +1,22 @@
 package com.shao.Domain;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Objects;
 
 /**
- * Created by shao on 2019/4/11 14:28.
+ * Created by shao on 2019/4/12 17:37.
  */
 @Entity
 public class User {
     private long id;
-    private String username;
+    private String uid;
     private String password;
     private Integer type;
 
     @Id
-    @GeneratedValue
     @Column(name = "id", nullable = false)
     public long getId() {
         return id;
@@ -25,13 +27,13 @@ public class User {
     }
 
     @Basic
-    @Column(name = "username", nullable = false, length = 45)
-    public String getUsername() {
-        return username;
+    @Column(name = "uid", nullable = false, length = 45)
+    public String getUid() {
+        return uid;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     @Basic
@@ -44,21 +46,6 @@ public class User {
         this.password = password;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id == user.id &&
-                Objects.equals(username, user.username) &&
-                Objects.equals(password, user.password);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, username, password);
-    }
-
     @Basic
     @Column(name = "type", nullable = true)
     public Integer getType() {
@@ -67,5 +54,21 @@ public class User {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                Objects.equals(uid, user.uid) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(type, user.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, uid, password, type);
     }
 }

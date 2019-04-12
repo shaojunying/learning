@@ -6,13 +6,13 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Created by shao on 2019/4/3 16:09.
+ * Created by shao on 2019/4/12 17:06.
  */
 public class UserHasCoursePK implements Serializable {
     private long userId;
     private long courseId;
 
-    @Column(name = "User_id")
+    @Column(name = "User_id", nullable = false)
     @Id
     public long getUserId() {
         return userId;
@@ -22,7 +22,7 @@ public class UserHasCoursePK implements Serializable {
         this.userId = userId;
     }
 
-    @Column(name = "Course_id")
+    @Column(name = "Course_id", nullable = false)
     @Id
     public long getCourseId() {
         return courseId;

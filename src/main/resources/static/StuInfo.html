@@ -105,12 +105,12 @@
                             <input type="text" class="form-control" placeholder="手机号">
                         </div>
                         <br>
-                        <form role="form">
-                            <div class="form-group" style="width:500px;">
-                                <label>个人简介</label>
-                                <textarea class="form-control" rows="3" style="width: 700px; height: 150px;resize:none;font-size: 15px"></textarea>
-                            </div>
-                        </form>
+                        <div class="form-group" style="width:500px;">
+                            <label>个人简介</label>
+                            <textarea class="form-control" rows="3" style="width: 700px; height: 150px;resize:none;font-size: 15px"></textarea>
+                        </div>
+                        <button onclick="changeInfo()" type="button" class="btn btn-primary btn-lg"data-toggle="button" style="width:205px;margin-left:200px;background-color: #2494ef">
+                            确认</button>
                     </form>
                 </div>
             </div>
@@ -118,4 +118,43 @@
     </div>
 </div>
 </body>
+<script>
+
+    $.ajax({
+        async:false,
+        type:"POST",
+        dataType: "json",
+        data:{
+            'username':username,
+            'password':password,
+            'type':options
+        },
+        url: 'users/register',
+        error : function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest);
+            console.log(textStatus);
+            console.log(errorThrown);
+        },
+        success: function (response) {
+            if (response.rspCode === '0000'){
+                //注册成功
+                if (options==1){
+                    //跳转到老师登陆页面
+                    window.location.href="TeaLogin.html";
+                }
+                else {
+                    //跳转到学生登录页
+                    window.location.href="StuLogin.html";
+                }
+            }
+            else {
+                console.log(response);
+            }
+        }
+    });
+
+    function changeInfo() {
+
+    }
+</script>
 </html>

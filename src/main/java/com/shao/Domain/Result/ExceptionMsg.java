@@ -8,6 +8,7 @@ public enum ExceptionMsg {
     LoginNameNotExists("0001","用户名不存在"),
     WrongPassword("0002","密码错误"),
     ExistingUsername("0003","用户名已存在"),
+    WrongToken("0004","错误的Token"),
     FAILED("2000","操作失败");
 
     private String code;
