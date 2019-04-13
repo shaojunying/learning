@@ -9,6 +9,8 @@ public enum ExceptionMsg {
     WrongPassword("0002","密码错误"),
     ExistingUsername("0003","用户名已存在"),
     WrongToken("0004","错误的Token"),
+    NotExistCourse("0005","不存在的课程"),
+    WrongCourseId("0006","错误的课程id"),
     FAILED("2000","操作失败");
 
     private String code;

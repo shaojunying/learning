@@ -12,6 +12,14 @@ public class UserHasCoursePK implements Serializable {
     private long userId;
     private long courseId;
 
+    public UserHasCoursePK() {
+    }
+
+    public UserHasCoursePK(long userId, long courseId) {
+        this.userId = userId;
+        this.courseId = courseId;
+    }
+
     @Column(name = "User_id", nullable = false)
     @Id
     public long getUserId() {
