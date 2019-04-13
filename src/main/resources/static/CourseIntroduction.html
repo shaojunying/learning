@@ -70,15 +70,7 @@
     </div>
 </nav>
 
-<div class="panel panel-default" style="margin-left:auto;margin-right:auto;width:1000px">
-    <div class="panel-body" style="font-size:40px">
-        课程名称
-    </div>
-    <div class="panel-footer" style="font-size:20px">课程简介(教师，课程时长)</div>
-    <img src="课程.jpg"
-         alt="通用的占位符缩略图">
-    课程信息介绍
-</div>
+<div class="panel panel-default" id="title" style="margin-left:auto;margin-right:auto;width:1000px"></div>
 <nav class="navbar navbar-default" role="navigation" style="margin-left:auto;margin-right:auto;width:1000px">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -90,23 +82,51 @@
     <div class="panel-body" style="font-size:25px">
         课程概述
     </div>
-    <div class="panel-footer" style="font-size:16px">
-        课程概述描述文本
-    </div>
+    <div class="panel-footer" id="overview" style="font-size:16px">    </div>
 
     <div class="panel-body" style="font-size:25px">
         授课目标
     </div>
-    <div class="panel-footer" style="font-size:16px">
-        授课目标描述文本
+    <div class="panel-footer" id="target" style="font-size:16px">
     </div>
 
     <div class="panel-body" style="font-size:25px">
         课程大纲
     </div>
-    <div class="panel-footer" style="font-size:16px">
-        课程大纲描述文本
+    <div class="panel-footer" id="outline" style="font-size:16px">
     </div>
 </div>
 </body>
+<script>
+    $.ajax({
+        async:false,
+        type:"GET",
+        dataType: "json",
+        url: 'course/1',
+        error : function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest);
+            console.log(textStatus);
+            console.log(errorThrown);
+        },
+        success: function (response) {
+            let courseIntro = response.data;
+            let titleHtml = '\n' +
+                '    <div class="panel-body" style="font-size:40px">\n' +
+                '        '+courseIntro.name+'\n' +
+                '    </div>\n' +
+                '    <div class="panel-footer" style="font-size:20px">'+
+                "老师:"+courseIntro.teacher+
+                    "学时:"+courseIntro.length
+                +'</div>\n' +
+                '    <img src="课程.jpg"\n' +
+                '         alt="通用的占位符缩略图">\n' +courseIntro.description;
+            let $title = $("#title");
+            $title.append(titleHtml);
+            $("#overview").append(courseIntro.overview);
+            $("#target").append(courseIntro.target);
+            $("#outline").append(courseIntro.outline);
+        }
+    });
+
+</script>
 </html>

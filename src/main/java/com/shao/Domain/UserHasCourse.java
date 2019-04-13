@@ -13,6 +13,14 @@ public class UserHasCourse {
     private long userId;
     private long courseId;
 
+    public UserHasCourse() {
+    }
+
+    public UserHasCourse(long userId, long courseId) {
+        this.userId = userId;
+        this.courseId = courseId;
+    }
+
     @Id
     @Column(name = "User_id", nullable = false)
     public long getUserId() {
