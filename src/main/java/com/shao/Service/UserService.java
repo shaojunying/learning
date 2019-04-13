@@ -1,7 +1,7 @@
 package com.shao.Service;
 
+import com.shao.Domain.Result.ResponseData;
 import com.shao.Domain.User;
-import com.shao.util.CodeInfo;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 /**
@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
  */
 public interface UserService{
 
-    /*
-    * 验证用用户信息是否匹配
-    * */
-    CodeInfo verifyUsers(@ModelAttribute User user);
-
-    /*
-    * 根据User信息创建新用户
-    * */
-    CodeInfo createUsers(@ModelAttribute User user);
+//    /*
+//    * 验证用用户信息是否匹配
+//    * */
+//    ResponseData verifyUsers(@ModelAttribute User user);
+//
+//    /*
+//    * 根据User信息创建新用户
+//    * */
+//    ResponseData createUsers(@ModelAttribute User user);
 }

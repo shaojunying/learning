@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>在线平台</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            font-family: "Lato", sans-serif;
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 248px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #f1f1f1;
+            overflow-x: hidden;
+            padding-top: 50px;
+        }
+
+        .sidenav a {
+            margin-left: 16px;
+            width: 215px;
+            padding: 16px 16px 16px 16px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #000000;
+            display: block;
+            background-color: white;
+            border: 52px #000000;
+        }
+
+        .sidenav a:hover {
+            background-color: #2494ef;
+            color: #f1f1f1;
+        }
+
+        .main {
+            margin-left: 248px; /* 与sidenav的宽度相同 */
+            font-size: 28px; /* 字体放大，让页面可滚动 */
+            padding: 0px 10px;
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidenav {padding-top: 15px;}
+            .sidenav a {font-size: 18px;}
+        }
+    </style>
+</head>
+<body style="background-color: #f1f1f1">
+<nav class="navbar navbar-default" role="navigation" style=" background-color:#2494ef; box-shadow: 0px 0px 6px #000; height: 50px;border: 0px">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="index.html" style="color: white;">软件项目管理在线学习平台</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li><a class="navbar-brand" href="Course.html" style="color: white;font-size: 20px">| 课程</a></li>
+            </ul>
+        </div>
+        <div style="margin-left: 1780px">
+            <ul class="nav navbar-nav">
+                <li><a class="navbar-brand" href="StuInfo.html" style="color: white;font-size: 20px">个人中心</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div style="position: fixed;z-index: -1;">
+    <div class="sidenav" style="box-shadow: 0px 0px 6px #000;">
+        <img src="bg.png" width="215px" height="170px" style="margin-left: 16px;margin-top: 10px; border-radius: 10px"/>
+        <a href="StuCourse.html" style="margin-top: 10px;">课程内容</a>
+        <a href="StuPrastice.html">课程实践</a>
+        <a href="StuMessageBoard.html">留言板</a>
+        <a href="StuTest.html">测试</a>
+    </div>
+    <div class="main">
+        <div>
+            <textarea style="width: 700px; height: 150px;resize:none;font-size: 15px"></textarea><br>
+            <button type="button" class="btn btn-success" style="margin-top: 0px; width: 100px;">发布</button>
+        </div>
+        <hr>
+        <div class="panel panel-default">
+            <div class="panel-body" style="font-size: 25px; width: 1600px;">标题</div>
+            <div class="panel-footer" style="font-size: 16px">
+                内容但是达十三地方s
+            </div>
+            <div class="panel-body" style="font-size: 25px">标题</div>
+            <div class="panel-footer" style="font-size: 16px">内容</div>
+            <div class="panel-body" style="font-size: 25px">标题</div>
+            <div class="panel-footer" style="font-size: 16px">内容</div>
+            <div class="panel-body" style="font-size: 25px">标题</div>
+            <div class="panel-footer" style="font-size: 16px">内容</div>
+            <div class="panel-body" style="font-size: 25px">标题</div>
+            <div class="panel-footer" style="font-size: 16px">内容</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
