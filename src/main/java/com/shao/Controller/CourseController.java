@@ -31,7 +31,7 @@ public class CourseController {
     @Autowired
     private AuthenticationService authenticationService;
     @Autowired
-    private UserHasCoursePKRepository userHasCoursePKRepository;
+    private UserHasCourseRepository userHasCourseRepository;
 
 
     @ApiOperation(value = "获取所有课程的简略信息")
@@ -97,8 +97,8 @@ public class CourseController {
         if (user.equals(Optional.empty())){
             return new ResponseData(ExceptionMsg.WrongCourseId);
         }
-        UserHasCoursePK userHasCoursePK = new UserHasCoursePK(user.get().getId(), courseId);
-        userHasCoursePKRepository.save(userHasCoursePK);
+        UserHasCourse userHasCourse = new UserHasCourse(user.get().getId(), courseId);
+        userHasCourseRepository.save(userHasCourse);
         return new ResponseData();
     }
 }
