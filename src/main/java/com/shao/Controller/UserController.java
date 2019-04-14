@@ -101,7 +101,7 @@ public class UserController{
             HashMap<String,String> result = new HashMap<>();
             result.put("nickname",userinfo.getNickname());
             result.put("email",userinfo.getEmail());
-            result.put("uid", String.valueOf(userinfo.getUserId()));
+            result.put("uid", user.get().getUid());
             result.put("name", userinfo.getName());
             result.put("phone",userinfo.getPhone());
             result.put("info", userinfo.getInfo());

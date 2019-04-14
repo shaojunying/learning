@@ -98,11 +98,17 @@
 </div>
 </body>
 <script>
+    let courseId = sessionStorage.getItem("courseId");
+    console.log(courseId);
+    if (courseId==null){
+        console.log("no courseId");
+        courseId=1;
+    }
     $.ajax({
         async:false,
         type:"GET",
         dataType: "json",
-        url: 'course/1',
+        url: 'course/'+courseId,
         error : function(XMLHttpRequest, textStatus, errorThrown) {
             console.log(XMLHttpRequest);
             console.log(textStatus);

@@ -105,7 +105,7 @@
                     '                        <h3>'+course['name']+'</h3>\n' +
                     '                        <p>'+course['description']+'</p>\n' +
                     '                        <p>\n' +
-                    '                            <a href="#" class="btn btn-default" role="button">\n' +
+                    '                            <a href="CourseIntroduction.html" onclick="courseIntroduction('+course.id+')" class="btn btn-default" role="button">\n' +
                     '                                查看课程\n' +
                     '                            </a>\n' +
                     '                        </p>\n' +
@@ -116,10 +116,9 @@
                 $row.append(courseHtml);
             }
         }
-    })
-
-    // let $row = $(".row");
-    //
-    // $row.append()
+    });
+    function courseIntroduction(courseId) {
+        sessionStorage.setItem("courseId",courseId);
+    }
 </script>
 </html>
