@@ -25,6 +25,8 @@ public class CourseController {
     @Autowired
     private UserInfoRepository userInfoRepository;
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private ChapterRepository chapterRepository;
     @Autowired
     private SectionRepository sectionRepository;
@@ -101,4 +103,22 @@ public class CourseController {
         userHasCourseRepository.save(userHasCourse);
         return new ResponseData();
     }
+
+    @ApiOperation(value = "获取选择该课程的所有学生")
+    @RequestMapping(value = "allStudents",method = RequestMethod.GET)
+    public ResponseData getAllStudentsByCourse(long courseId){
+        List<UserHasCourse> userHasCourseList =  userHasCourseRepository.findAllByCourseId(courseId);
+
+        LinkedList<Map<String,String>> data = new LinkedList<>();
+        for (UserHasCourse userHasCourse :userHasCourseList){
+            Userinfo userinfo = userInfoRepository.findByUserId(userHasCourse.getUserId());
+            HashMap<String,String> userMap = new HashMap<>();
+            userMap.put("name", userinfo.getName());
+            Optional<User> user = userRepository.findById(userHasCourse.getUserId());
+            user.ifPresent(value -> userMap.put("uid", value.getUid()));
+            data.add(userMap);
+        }
+        return new ResponseData(data);
+    }
+
 }

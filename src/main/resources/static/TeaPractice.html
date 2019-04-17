@@ -79,19 +79,40 @@
             <a href="TeaMessageBoard.html">留言板</a>
         </div>
         <div class="main">
-            <div class="panel panel-default">
-                <div class="panel-body" style="font-size: 25px; width: 1600px">章节一</div>
-                <div class="panel-footer" style="font-size: 16px">内容但是达十三地方s</div>
-                <div class="panel-body" style="font-size: 25px">章节二</div>
-                <div class="panel-footer" style="font-size: 16px">内容</div>
-                <div class="panel-body" style="font-size: 25px">章节三</div>
-                <div class="panel-footer" style="font-size: 16px">内容</div>
-                <div class="panel-body" style="font-size: 25px">章节四</div>
-                <div class="panel-footer" style="font-size: 16px">内容</div>
-                <div class="panel-body" style="font-size: 25px">章节五</div>
-                <div class="panel-footer" style="font-size: 16px">内容</div>
-            </div>
+            <div id="list" class="panel panel-default"></div>
         </div>
     </div>
 </body>
+
+<script>
+    let courseId = sessionStorage.getItem("courseId");
+    $.ajax({
+        async:false,
+        type:"GET",
+        dataType: "json",
+        data:{
+            "courseId":courseId
+        },
+        url: 'experiment',
+        error : function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest);
+            console.log(textStatus);
+            console.log(errorThrown);
+        },
+        success: function (response) {
+            if (response.rspCode === '0000'){
+                let data = response.data;
+                for (let i in data){
+                    let experiment = data[i];
+                    let experimentHtml =
+                        '<div class="panel-body" style="font-size: 25px"><a href="'+experiment['url']+'">'+experiment['name']+'</a></div>\n';
+                    $("#list").append(experimentHtml);
+                }
+            }
+            else {
+                console.log(response);
+            }
+        }
+    })
+</script>
 </html>

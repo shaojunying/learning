@@ -81,24 +81,87 @@
         <div class="main">
             <div>
                 <textarea style="width: 700px; height: 150px;resize:none;font-size: 15px"></textarea><br>
-                <button type="button" class="btn btn-success" style="margin-top: 0px; width: 100px;">发布</button>
+                <button onclick="submitMessage()" type="button" class="btn btn-success" style="margin-top: 0px; width: 100px;">发布</button>
             </div>
             <hr>
-            <div class="panel panel-default">
-                <div class="panel-body" style="font-size: 25px; width: 1600px;">标题</div>
-                <div class="panel-footer" style="font-size: 16px">
-                    内容但是达十三地方s
-                </div>
-                <div class="panel-body" style="font-size: 25px">标题</div>
-                <div class="panel-footer" style="font-size: 16px">内容</div>
-                <div class="panel-body" style="font-size: 25px">标题</div>
-                <div class="panel-footer" style="font-size: 16px">内容</div>
-                <div class="panel-body" style="font-size: 25px">标题</div>
-                <div class="panel-footer" style="font-size: 16px">内容</div>
-                <div class="panel-body" style="font-size: 25px">标题</div>
-                <div class="panel-footer" style="font-size: 16px">内容</div>
-            </div>
+            <div class="panel panel-default" id="list"></div>
         </div>
     </div>
 </body>
+<script>
+
+    let courseId = sessionStorage.getItem("courseId");
+    loadMessages();
+
+    function submitMessage() {
+        let $message = $("#message");
+        let message = $message.val();
+        if (message===""){
+            return;
+        }
+        $message.val("");
+        $.ajax({
+            async:false,
+            type:"POST",
+            data:{
+                "token":$.cookie("token"),
+                "courseId":courseId,
+                "content":message
+            },
+            dataType: "json",
+            url: 'messageBoard',
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrown);
+            },
+            success: function (response) {
+                if (response.rspCode === '0000'){
+                    loadMessages();
+                    console.log(response);
+                }
+                else {
+                    console.log(response);
+                }
+            }
+        })
+    }
+
+    function loadMessages(){
+        $.ajax({
+            async:false,
+            type:"GET",
+            dataType: "json",
+            data:{
+                "courseId":courseId
+            },
+            url: 'messageBoard',
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrown);
+            },
+            success: function (response) {
+                if (response.rspCode === '0000'){
+                    let data = response.data;
+                    let $list = $("#list");
+                    $list.empty();
+                    for (let i in data.reverse()){
+                        let message = data[i];
+                        let messageHtml =
+                            '<div class="panel-body" style="font-size: 16px">'+message['content']+'</div>'+
+                            '<div class="panel-footer" style="font-size: 10px">'+message['user']+'</div>\n' +
+                            '<div class="panel-footer" style="font-size: 12px">'+message['createtime']+'</div>\n'
+                        $list.append(messageHtml);
+                    }
+                }
+                else {
+                    console.log(response);
+                }
+            }
+        })
+    }
+
+
+</script>
 </html>

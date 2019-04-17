@@ -1,20 +1,25 @@
 package com.shao.Controller;
 
+import com.shao.Domain.Course;
 import com.shao.Domain.Result.ExceptionMsg;
 import com.shao.Domain.Result.ResponseData;
 import com.shao.Domain.User;
+import com.shao.Domain.UserHasCourse;
 import com.shao.Domain.Userinfo;
+import com.shao.Repository.CourseRepository;
+import com.shao.Repository.UserHasCourseRepository;
 import com.shao.Repository.UserInfoRepository;
 import com.shao.Repository.UserRepository;
 import com.shao.Service.AuthenticationService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -28,6 +33,10 @@ public class UserController{
     private AuthenticationService authenticationService;
     @Autowired
     private UserInfoRepository userInfoRepository;
+    @Autowired
+    private CourseRepository courseRepository;
+    @Autowired
+    private UserHasCourseRepository userHasCourseRepository;
 
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -135,6 +144,35 @@ public class UserController{
             System.out.println(e);
             return new ResponseData(ExceptionMsg.FAILED);
         }
+    }
+
+    @ApiOperation(value = "获取某位老师的讲述的所有课程")
+    @RequestMapping(value = "allCourse",method =RequestMethod.GET)
+    public ResponseData getAllCourseByTeacherId(String token){
+        Optional<User> user = authenticationService.parseToken(token);
+        if (user.equals(Optional.empty())) {
+            return new ResponseData(ExceptionMsg.WrongToken);
+        }
+        long userId = user.get().getId();
+        List<Course> courseList = courseRepository.findAllByTeacherId(userId);
+        List<HashMap<String,String>> courseMapList = new LinkedList<>();
+        for (Course course : courseList){
+            HashMap<String,String> courseMap = new HashMap<>();
+            courseMap.put("name", course.getName());
+            courseMap.put("id", String.valueOf(course.getId()));
+            courseMapList.add(courseMap);
+        }
+        return new ResponseData(courseMapList);
+    }
+
+    @Modifying
+    @Transactional
+    @ApiOperation(value = "删除某位学生的某门课程")
+    @RequestMapping(value = "{courseId}",method = RequestMethod.DELETE)
+    public ResponseData deleteUserFromCourse(@PathVariable long courseId,String uid){
+        User user= userRepository.findByUid(uid);
+        userHasCourseRepository.deleteByUserIdAndCourseId(user.getId(),courseId);
+        return new ResponseData();
     }
 
 }

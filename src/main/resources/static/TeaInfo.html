@@ -86,31 +86,31 @@
                     <div style="padding: 100px 100px 10px;">
                         <form class="bs-example bs-example-form" role="form">
                             <div class="input-group input-group-lg">
-                                <input type="text" class="form-control" placeholder="昵称">
+                                <input type="text" id="nickname" class="form-control" placeholder="昵称" style="height:50px;">
                             </div>
                             <br>
                             <div class="input-group input-group-lg">
-                                <input type="text" class="form-control" placeholder="常用邮箱">
+                                <input type="text" id="email" class="form-control" placeholder="常用邮箱">
                             </div>
                             <br>
                             <div class="input-group input-group-lg">
-                                <input type="text" class="form-control" placeholder="学号">
+                                <input type="text" id="uid" class="form-control" placeholder="学号">
                             </div>
                             <br>
                             <div class="input-group input-group-lg">
-                                <input type="text" class="form-control" placeholder="真实姓名">
+                                <input type="text" id="name" class="form-control" placeholder="真实姓名">
                             </div>
                             <br>
                             <div class="input-group input-group-lg">
-                                <input type="text" class="form-control" placeholder="手机号">
+                                <input type="text" id="phone" class="form-control" placeholder="手机号">
                             </div>
                             <br>
-                            <form role="form">
-                                <div class="form-group" style="width:500px;">
-                                    <label>个人简介</label>
-                                    <textarea class="form-control" rows="3"></textarea>
-                                </div>
-                            </form>
+                            <div class="form-group" style="width:500px;">
+                                <label>个人简介</label>
+                                <textarea id="info" class="form-control" rows="3" style="width: 700px; height: 150px;resize:none;font-size: 15px"></textarea>
+                            </div>
+                            <button onclick="changeInfo()" type="button" class="btn btn-primary btn-lg"data-toggle="button" style="width:205px;margin-left:200px;background-color: #2494ef">
+                                确认</button>
                         </form>
                     </div>
                 </div>
@@ -118,4 +118,64 @@
         </div>
     </div>
 </body>
+<script>
+    $.ajax({
+        async:false,
+        type:"Get",
+        dataType: "json",
+        data:{
+            'token':$.cookie("token")
+        },
+        url: 'users/info',
+        error : function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest);
+            console.log(textStatus);
+            console.log(errorThrown);
+        },
+        success: function (response) {
+            if (response.rspCode === '0000'){
+                let data = response.data;
+                $("#nickname").val(data.nickname);
+                $("#email").val(data.email);
+                $("#uid").val(data.uid);
+                $("#name").val(data.name);
+                $("#phone").val(data.phone);
+                $("#info").val(data.info);
+            }
+            else {
+                console.log(response);
+            }
+        }
+    });
+
+    function changeInfo() {
+        $.ajax({
+            async:false,
+            type:"PUT",
+            dataType: "json",
+            data:{
+                'token':$.cookie("token"),
+                "nickname":$("#nickname").val(),
+                "email":$("#email").val(),
+                "name":$("#name").val(),
+                "phone":$("#phone").val(),
+                "info":$("#info").val()
+            },
+            url: 'users/info',
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrown);
+            },
+            success: function (response) {
+                if (response.rspCode === '0000'){
+                    alert("修改成功");
+                }
+                else {
+                    console.log(response);
+                }
+            }
+        });
+    }
+</script>
 </html>
