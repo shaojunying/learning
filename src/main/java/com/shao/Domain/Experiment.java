@@ -14,6 +14,7 @@ public class Experiment {
     private long id;
     private String instructionUrl;
     private long courseId;
+    private String name;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -58,5 +59,15 @@ public class Experiment {
     @Override
     public int hashCode() {
         return Objects.hash(id, instructionUrl, courseId);
+    }
+
+    @Basic
+    @Column(name = "name", nullable = true, length = -1)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
