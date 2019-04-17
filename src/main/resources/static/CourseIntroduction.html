@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <style>
         body {
             font-family: "Lato", sans-serif;
@@ -70,7 +71,18 @@
     </div>
 </nav>
 
-<div class="panel panel-default" id="title" style="margin-left:auto;margin-right:auto;width:1000px"></div>
+<div class="panel panel-default" id="title" style="margin-left:auto;margin-right:auto;width:1000px">
+    <div class="panel-body" style="font-size:40px">
+        <div id="name"></div>
+        <button type="button" onclick="chooseCourse()" class="btn btn-warning" style="background-color: #fe900d;width: 200px;">开始学习</button>
+    </div>
+    <div class="panel-footer" style="font-size:20px">
+        老师: <div id="teacher"></div>
+        学时: <div id="length"></div>
+    </div>
+    <img src="course.jpg" alt="通用的占位符缩略图" width="200px" height="150px" style="object-fit: cover">
+    <div id="description"></div>
+</div>
 <nav class="navbar navbar-default" role="navigation" style="margin-left:auto;margin-right:auto;width:1000px">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -116,23 +128,41 @@
         },
         success: function (response) {
             let courseIntro = response.data;
-            let titleHtml = '\n' +
-                '    <div class="panel-body" style="font-size:40px">\n' +
-                '        '+courseIntro.name+'\n' +
-                '    </div>\n' +
-                '    <div class="panel-footer" style="font-size:20px">'+
-                "老师:"+courseIntro.teacher+
-                    "学时:"+courseIntro.length
-                +'</div>\n' +
-                '    <img src="课程.jpg"\n' +
-                '         alt="通用的占位符缩略图">\n' +courseIntro.description;
-            let $title = $("#title");
-            $title.append(titleHtml);
+            $("#name").append(courseIntro.name);
+            $("#teacher").append(courseIntro.teacher);
+            $("#length").append(courseIntro.length);
+            $("#description").append(courseIntro.description);
             $("#overview").append(courseIntro.overview);
             $("#target").append(courseIntro.target);
             $("#outline").append(courseIntro.outline);
         }
     });
+
+    function chooseCourse() {
+        $.ajax({
+            async:false,
+            type:"POST",
+            dataType: "json",
+            data:{
+                "token":$.cookie("token"),
+                "courseId":courseId
+            },
+            url: 'course',
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrown);
+            },
+            success: function (response) {
+                if (response.rspCode==="0000"){
+                    window.location.href="StuCourse.html";
+                }
+                else {
+                    console.log(response)
+                }
+            }
+        })
+    }
 
 </script>
 </html>
