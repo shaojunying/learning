@@ -1,20 +1,24 @@
 package com.shao.Domain;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
- * Created by shao on 2019/4/12 17:06.
+ * Created by shao on 2019/4/16 14:01.
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Messageboard {
     private long id;
     private String content;
     private long courseId;
     private long userId;
+    @CreatedDate
+    private Timestamp createtime;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -56,6 +60,16 @@ public class Messageboard {
         this.userId = userId;
     }
 
+    @Basic
+    @Column(name = "createtime", nullable = true)
+    public Timestamp getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(Timestamp createtime) {
+        this.createtime = createtime;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,11 +78,12 @@ public class Messageboard {
         return id == that.id &&
                 courseId == that.courseId &&
                 userId == that.userId &&
-                Objects.equals(content, that.content);
+                Objects.equals(content, that.content) &&
+                Objects.equals(createtime, that.createtime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, content, courseId, userId);
+        return Objects.hash(id, content, courseId, userId, createtime);
     }
 }

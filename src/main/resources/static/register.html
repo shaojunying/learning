@@ -55,12 +55,19 @@
             return false;
         }
 
+        let data={
+            'uid':username,
+                'password':password,
+                'type':options
+        };
+        console.log(data);
+
         $.ajax({
             async:false,
             type:"POST",
             dataType: "json",
             data:{
-                'username':username,
+                'uid':username,
                 'password':password,
                 'type':options
             },

@@ -122,7 +122,6 @@ public class UserController{
             if (user.equals(Optional.empty())){
                 return new ResponseData(ExceptionMsg.WrongToken);
             }
-
             Userinfo userinfo = userInfoRepository.findByUserId(user.get().getId());
             userinfo.setNickname(loginUserinfo.getNickname());
             userinfo.setEmail(loginUserinfo.getEmail());
