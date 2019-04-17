@@ -84,19 +84,39 @@
                     欢迎回来!
                 </div>
             </div>
-            <div class="panel panel-default">
-                <div class="panel-body" style="font-size: 25px">章节一</div>
-                <div class="panel-footer" style="font-size: 16px">内容但是达十三地方s</div>
-                <div class="panel-body" style="font-size: 25px">章节二</div>
-                <div class="panel-footer" style="font-size: 16px">内容</div>
-                <div class="panel-body" style="font-size: 25px">章节三</div>
-                <div class="panel-footer" style="font-size: 16px">内容</div>
-                <div class="panel-body" style="font-size: 25px">章节四</div>
-                <div class="panel-footer" style="font-size: 16px">内容</div>
-                <div class="panel-body" style="font-size: 25px">章节五</div>
-                <div class="panel-footer" style="font-size: 16px">内容</div>
-            </div>
+            <div class="panel panel-default" id="content"></div>
         </div>
     </div>
 </body>
+
+<script>
+    let $content = $("#content");
+    let courseId = sessionStorage.getItem("courseId");
+    $.ajax({
+        async:false,
+        type:"GET",
+        dataType: "json",
+        url: 'course/'+courseId+'/chapter',
+        error : function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest);
+            console.log(textStatus);
+            console.log(errorThrown);
+        },
+        success: function (response) {
+            let courseInfo = response.data;
+            for (let chapter in courseInfo){
+                let chapterInfo = courseInfo[chapter];
+                let sectionHtml="";
+                for (let section in chapterInfo){
+                    sectionHtml+="<li><a href='"+chapterInfo[section]+"'>"+section+"</a></li>";
+                }
+                let courseInfoHtml =
+                    '<div class="panel-body" style="font-size: 25px">'+chapter+'</div>\n' +
+                    '<div class="panel-footer" style="font-size: 16px">'+sectionHtml+'</div>';
+                $content.append(courseInfoHtml);
+            }
+        }
+    })
+</script>
+
 </html>
