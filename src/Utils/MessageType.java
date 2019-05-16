@@ -6,5 +6,5 @@ package Utils;
 public enum MessageType {
     ESTABLISH, // 建立
     MESSAGE, // 消息
-    GET_USERINFO // 获取用户信息
+    USER_INFO // 获取用户信息
 }

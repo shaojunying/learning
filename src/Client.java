@@ -10,6 +10,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -48,6 +49,19 @@ public class Client {
         DefaultCaret caret = (DefaultCaret) chatRecordArea.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
+
+        // 显示用户列表
+        JScrollPane scrollPanel1 = new JScrollPane();
+        scrollPanel1.setBounds(410, 45, 100, 360);
+        container.add(scrollPanel1);
+
+        JTextArea userListArea = new JTextArea();
+        userListArea.setBounds(410, 45, 100, 360);
+        userListArea.setEditable(false);
+        userListArea.setLineWrap(true); // 激活自动换行功能
+        userListArea.setWrapStyleWord(true);
+        container.add(userListArea);
+        scrollPanel.setViewportView(userListArea);
 
         // 显示用户名
         JTextArea userIdArea = new JTextArea();
@@ -105,7 +119,7 @@ public class Client {
         frame.setVisible(true);
 
         // 从服务器段接受信息
-        ReadThread readThread = new ReadThread(chatRecordArea);
+        ReadThread readThread = new ReadThread(chatRecordArea, userListArea);
         new Thread(readThread).start();
     }
 
@@ -127,13 +141,15 @@ public class Client {
 
     class ReadThread implements Runnable{
         private final JTextArea textArea;
+        private final JTextArea userListArea;
         /*
         * 从服务器中获取数据
         * */
 
-        ReadThread(JTextArea textArea) {
+        ReadThread(JTextArea textArea, JTextArea userListArea) {
             // 将获取的文本追加进该textArea中
             this.textArea = textArea;
+            this.userListArea = userListArea;
         }
 
         @Override
@@ -148,6 +164,18 @@ public class Client {
                     e.printStackTrace();
                 }
                 assert data != null;
+                if (data.getMessageType() == MessageType.USER_INFO) {
+                    StringBuffer userListString = new StringBuffer();
+                    List<String> userList = data.getUserList();
+                    userList.forEach((userId) -> {
+                        userListString.append(userId + "\n");
+                    });
+                    System.out.println(111);
+                    System.out.println(userListArea);
+                    System.out.println(textArea);
+                    userListArea.setText(userListString.toString());
+                    continue;
+                }
                 dataList.add(data);
                 String showText = Helper.dataListToString(dataList);
                 textArea.setText(showText);

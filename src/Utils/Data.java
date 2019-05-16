@@ -3,6 +3,7 @@ package Utils;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 用途:
@@ -15,6 +16,17 @@ public class Data implements Serializable {
     private String userId;
     private String content;
     private Date sendDate;
+
+    private List<String> userList;
+
+    public Data(MessageType messageType, List<String> userList) {
+        this.messageType = messageType;
+        this.userList = userList;
+    }
+
+    public List<String> getUserList() {
+        return userList;
+    }
 
     public Data(MessageType messageType, String userId) {
         this.messageType = messageType;

@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,6 +26,19 @@ public class Server {
             System.out.printf("与%d连接成功\n", client.getPort());
             new Thread(new ServerThread(client)).start();
         }
+    }
+
+    public static void sendUserList() {
+        List<String> userIdList = new LinkedList<>();
+        clientMap.forEach((socket, userId1) -> userIdList.add(userId1));
+        Data userListData = new Data(MessageType.USER_INFO, userIdList);
+        clientMap.forEach((socket, userId1) -> {
+            try {
+                Helper.sendData(Helper.getSocketOutput(socket), userListData);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public static class ServerThread implements Runnable{
@@ -63,6 +78,7 @@ public class Server {
                         if (data.getMessageType() == MessageType.ESTABLISH) {
                             clientMap.put(client, data.getUserId());
                             System.out.printf("客户端%d用户名改为[%s]\n", client.getPort(), data.getUserId());
+                            sendUserList();
                             continue;
                         }
                         String userId = clientMap.get(client);
@@ -81,6 +97,7 @@ public class Server {
                 // 从字典中删除断开连接的客户端
                 String userId = clientMap.get(client);
                 clientMap.remove(client);
+                sendUserList();
                 System.out.printf("客户端%d(用户名:%s)发送断开链接消息并成功断开\n", client.getPort(), userId);
             }
         }

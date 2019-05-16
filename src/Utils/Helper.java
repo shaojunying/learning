@@ -31,7 +31,7 @@ public class Helper {
     /*
      * 将子节数组转化为对象
      * */
-    public static Object decodeData(byte[] bytes) throws IOException {
+    public static Object decodeData(byte[] bytes) {
 
         Object object = null;
 
