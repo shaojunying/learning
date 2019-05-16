@@ -1,17 +1,32 @@
-import java.io.*;
+import Utils.Data;
+import Utils.Helper;
+import Utils.MessageType;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by shao on 2018/12/4.
  */
 public class Server {
+    static Map<Socket, String> clientMap = new HashMap<>();
 
+    public static void main(String[] args) throws IOException {
+        ServerSocket serverSocket = new ServerSocket(20001);
+        Socket client;
+        while (true) {
+            client = serverSocket.accept();
+            System.out.printf("与%d连接成功\n", client.getPort());
+            new Thread(new ServerThread(client)).start();
+        }
+    }
 
     public static class ServerThread implements Runnable{
-
         private Socket client;
         DataInputStream dis;
         DataOutputStream dos;
@@ -22,16 +37,13 @@ public class Server {
             // 获取客户端的输出
             dis = new DataInputStream(client.getInputStream());
             // 获取客户端的输入
-            dos = new DataOutputStream(client.getOutputStream());;
+            dos = new DataOutputStream(client.getOutputStream());
             flag = true;
         }
         @Override
         public void run() {
-
             ReadThread readThread = new ReadThread();
             new Thread(readThread).start();
-            WriteThread writeThread = new WriteThread();
-            new Thread(writeThread).start();
         }
 
         class ReadThread implements Runnable{
@@ -46,51 +58,31 @@ public class Server {
                     } catch (IOException e) {
                         flag = false;
                         System.out.println("客户端强制退出");
-//                        e.printStackTrace();
                     }
                     if (data != null){
-                        System.out.println("从客户端接受到的数据是: "+data);
+                        if (data.getMessageType() == MessageType.ESTABLISH) {
+                            clientMap.put(client, data.getUserId());
+                            System.out.printf("客户端%d用户名改为[%s]\n", client.getPort(), data.getUserId());
+                            continue;
+                        }
+                        String userId = clientMap.get(client);
+                        Data sendData = new Data(userId, data.getContent(), data.getSendDate());
+                        System.out.printf("客户端%d(用户名%s)发消息[%s]\n", client.getPort(), userId, data.getContent());
+                        clientMap.forEach((receiverSocket, receiverUserId) -> {
+                            try {
+                                DataOutputStream outputStream = Helper.getSocketOutput(receiverSocket);
+                                Helper.sendData(outputStream, sendData);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
                     }
                 }
-                System.out.println("客户端发送断开链接消息并成功断开");
+                // 从字典中删除断开连接的客户端
+                String userId = clientMap.get(client);
+                clientMap.remove(client);
+                System.out.printf("客户端%d(用户名:%s)发送断开链接消息并成功断开\n", client.getPort(), userId);
             }
-        }
-
-        class WriteThread implements Runnable{
-
-            @Override
-            public void run() {
-                // 向客户段写数据
-
-//                while (flag){
-//
-//                    SimpleDateFormat sf = new  SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                    try {
-//                        Helper.sendData(dos,new Data((int) (Math.random()*100),sf.format(new Date())));
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                    try {
-//                        Thread.sleep(10000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-
-            }
-        }
-    }
-
-
-
-    public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(20001);
-        Socket client = null;
-//        boolean f = true;
-        while (true){
-            client = serverSocket.accept();
-            System.out.println("与客户端链接成功");
-            new Thread(new ServerThread(client)).start();
         }
     }
 
