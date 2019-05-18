@@ -5,12 +5,12 @@ import Utils.MessageType;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -19,12 +19,14 @@ import java.util.List;
 public class Client {
     private Socket client;
 
-    LinkedList<Data> dataList = new LinkedList<>();
+    // 用来存储聊天记录
+    private List<Data> dataList = new LinkedList<>();
+    // 用来存储在线的用户列表
+    private Map<Integer, String> port2IdMap = new HashMap<>();
+
 
     private Client() throws IOException {
-        client = new Socket("127.0.0.1",20001);
-
-        DataOutputStream dos = Helper.getSocketOutput(client);
+        client = new Socket(Helper.serverIp, Helper.serverPort);
 
         // 给frame换一个样式
         JFrame.setDefaultLookAndFeelDecorated(true);
@@ -33,35 +35,15 @@ public class Client {
         Container container = frame.getContentPane();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // 显示用户的聊天记录
-        JScrollPane scrollPanel = new JScrollPane();
-        scrollPanel.setBounds(10, 10, 400, 400);
-        container.add(scrollPanel);
-
-        JTextArea chatRecordArea = new JTextArea();
-        chatRecordArea.setBounds(10, 10, 400, 400);
-        chatRecordArea.setEditable(false);
-        chatRecordArea.setLineWrap(true); // 激活自动换行功能
-        chatRecordArea.setWrapStyleWord(true);
-        container.add(chatRecordArea);
-        scrollPanel.setViewportView(chatRecordArea);
+        /*显示用户的聊天记录*/
+        JTextArea chatRecordArea = createTextAreaWithScroller(container, 10, 10, 400, 400);
         // 保证滚动条在最下面
         DefaultCaret caret = (DefaultCaret) chatRecordArea.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
 
         // 显示用户列表
-        JScrollPane scrollPanel1 = new JScrollPane();
-        scrollPanel1.setBounds(410, 45, 100, 360);
-        container.add(scrollPanel1);
-
-        JTextArea userListArea = new JTextArea();
-        userListArea.setBounds(410, 45, 100, 360);
-        userListArea.setEditable(false);
-        userListArea.setLineWrap(true); // 激活自动换行功能
-        userListArea.setWrapStyleWord(true);
-        container.add(userListArea);
-        scrollPanel.setViewportView(userListArea);
+        JTextArea userListArea = createTextAreaWithScroller(container, 410, 45, 100, 360);
 
         // 显示用户名
         JTextArea userIdArea = new JTextArea();
@@ -106,7 +88,7 @@ public class Client {
                 content = content.trim();
                 if (content.length() == 0)
                     return;
-                Helper.sendData(dos, new Data(content));
+                Helper.sendData(client, new Data(content));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -133,10 +115,32 @@ public class Client {
         new Client();
     }
 
+    /*
+     * 在container中创建一个指定x,y,width,height的textArea
+     * */
+    private JTextArea createTextAreaWithScroller(Container container, int x, int y, int width, int height) {
+        JScrollPane ScrollPanel = new JScrollPane();
+        ScrollPanel.setBounds(x, y, width, height);
+        container.add(ScrollPanel);
+
+        JTextArea textArea = new JTextArea();
+        textArea.setBounds(x, y, width, height);
+        textArea.setEditable(false);
+        textArea.setLineWrap(true); // 激活自动换行功能
+        textArea.setWrapStyleWord(true);
+        container.add(textArea);
+        ScrollPanel.setViewportView(textArea);
+
+        return textArea;
+    }
+
+    /*
+     * 将该用户新设置的userId发送给服务器
+     * */
     private void sendNewUserId(String userId) throws IOException {
+        // 取出新设置的userId前后的空白字符
         userId = userId.trim();
-        DataOutputStream dos = Helper.getSocketOutput(client);
-        Helper.sendData(dos, new Data(MessageType.ESTABLISH, userId));
+        Helper.sendData(client, new Data(MessageType.ESTABLISH, userId));
     }
 
     class ReadThread implements Runnable{
@@ -158,26 +162,24 @@ public class Client {
             while (true) {
                 Data data = null;
                 try {
-                    DataInputStream dis = Helper.getSocketInput(client);
-                    data = Helper.receiveData(dis);
+                    data = Helper.receiveData(client);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 assert data != null;
                 if (data.getMessageType() == MessageType.USER_INFO) {
                     StringBuffer userListString = new StringBuffer();
-                    List<String> userList = data.getUserList();
-                    userList.forEach((userId) -> {
-                        userListString.append(userId + "\n");
+                    port2IdMap = data.getPort2IdMap();
+                    port2IdMap.forEach((port, userId) -> {
+                        userListString.append(userId).append("\n");
                     });
-                    System.out.println(111);
-                    System.out.println(userListArea);
-                    System.out.println(textArea);
                     userListArea.setText(userListString.toString());
+                    String showText = Helper.dataListToString(port2IdMap, dataList);
+                    textArea.setText(showText);
                     continue;
                 }
                 dataList.add(data);
-                String showText = Helper.dataListToString(dataList);
+                String showText = Helper.dataListToString(port2IdMap, dataList);
                 textArea.setText(showText);
             }
         }

@@ -2,24 +2,20 @@ import Utils.Data;
 import Utils.Helper;
 import Utils.MessageType;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 /**
  * Created by shao on 2018/12/4.
  */
 public class Server {
-    static Map<Socket, String> clientMap = new HashMap<>();
+    private static Map<Socket, String> clientMap = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(20001);
+        ServerSocket serverSocket = new ServerSocket(Helper.serverPort);
         Socket client;
         while (true) {
             client = serverSocket.accept();
@@ -28,13 +24,13 @@ public class Server {
         }
     }
 
-    public static void sendUserList() {
-        List<String> userIdList = new LinkedList<>();
-        clientMap.forEach((socket, userId1) -> userIdList.add(userId1));
-        Data userListData = new Data(MessageType.USER_INFO, userIdList);
+    private static void sendUserList() {
+        Map<Integer, String> Port2IdMap = new HashMap<>();
+        clientMap.forEach((socket, userId1) -> Port2IdMap.put(socket.getPort(), userId1));
+        Data userListData = new Data(MessageType.USER_INFO, Port2IdMap);
         clientMap.forEach((socket, userId1) -> {
             try {
-                Helper.sendData(Helper.getSocketOutput(socket), userListData);
+                Helper.sendData(socket, userListData);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -43,16 +39,10 @@ public class Server {
 
     public static class ServerThread implements Runnable{
         private Socket client;
-        DataInputStream dis;
-        DataOutputStream dos;
         boolean flag;
 
-        ServerThread(Socket client) throws IOException {
+        ServerThread(Socket client) {
             this.client = client;
-            // 获取客户端的输出
-            dis = new DataInputStream(client.getInputStream());
-            // 获取客户端的输入
-            dos = new DataOutputStream(client.getOutputStream());
             flag = true;
         }
         @Override
@@ -69,10 +59,9 @@ public class Server {
                 while (flag){
                     Data data = null;
                     try {
-                        data = Helper.receiveData(dis);
+                        data = Helper.receiveData(client);
                     } catch (IOException e) {
                         flag = false;
-                        System.out.println("客户端强制退出");
                     }
                     if (data != null){
                         if (data.getMessageType() == MessageType.ESTABLISH) {
@@ -82,12 +71,11 @@ public class Server {
                             continue;
                         }
                         String userId = clientMap.get(client);
-                        Data sendData = new Data(userId, data.getContent(), data.getSendDate());
+                        Data sendData = new Data(client.getPort(), data.getContent(), data.getSendDate());
                         System.out.printf("客户端%d(用户名%s)发消息[%s]\n", client.getPort(), userId, data.getContent());
                         clientMap.forEach((receiverSocket, receiverUserId) -> {
                             try {
-                                DataOutputStream outputStream = Helper.getSocketOutput(receiverSocket);
-                                Helper.sendData(outputStream, sendData);
+                                Helper.sendData(receiverSocket, sendData);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }

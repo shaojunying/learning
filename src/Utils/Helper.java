@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -12,9 +13,14 @@ import java.util.Random;
  */
 public class Helper {
 
-    private static final int maxMessageLength = 1024;
+    public final static String serverIp = "";
     // 日期的格式
     private static SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public final static int serverPort = 20001;
+    /*
+     * 最大消息长度
+     * */
+    private static final int maxMessageLength = 1024;
 
     /*
      * 将对象转化为byte数组
@@ -44,31 +50,41 @@ public class Helper {
         return object;
     }
 
-    // 发送数据
-    public static void sendData(DataOutputStream dos, Data data) throws IOException {
+    /*
+     * 向指定socket发送数据
+     * */
+    public static void sendData(Socket socket, Data data) throws IOException {
+        DataOutputStream dos = getSocketOutput(socket);
         dos.write(Helper.encodeData(data));
     }
 
-    public static Data receiveData(DataInputStream dis) throws IOException {
+    /*
+     * 从指定socket接受数据
+     * */
+    public static Data receiveData(Socket socket) throws IOException {
+        DataInputStream dis = getSocketInput(socket);
         byte[] bytes = new byte[maxMessageLength];
         dis.read(bytes);
         return (Data) decodeData(bytes);
     }
 
-    public static DataOutputStream getSocketOutput(Socket socket) throws IOException {
-        /*
-         * 发出数据
-         * */
+    /*
+     * 获取socket对应的outputStream(发送数据)
+     * */
+    private static DataOutputStream getSocketOutput(Socket socket) throws IOException {
         return new DataOutputStream(socket.getOutputStream());
     }
 
-    public static DataInputStream getSocketInput(Socket socket) throws IOException {
-        /*
-         * 接收数据
-         * */
+    /*
+     * 获取socket对应的inputStream(接收数据)
+     * */
+    private static DataInputStream getSocketInput(Socket socket) throws IOException {
         return new DataInputStream(socket.getInputStream());
     }
 
+    /*
+     * 获取一个长度为5的随机串,串中可以含数字,大小写字母
+     * */
     public static String getRandomString() {
         Random random = new Random();
         StringBuffer sb = new StringBuffer();
@@ -93,14 +109,20 @@ public class Helper {
         return sb.toString();
     }
 
+    /*
+     * 将Date对象进行格式化
+     * */
     public static String formatTime(Date date) {
         return sf.format(date);
     }
 
-    public static String dataListToString(List<Data> dataList) {
+    /*
+     * 将聊天记录的dataList转化为String进行显示
+     * */
+    public static String dataListToString(Map<Integer, String> port2IdMap, List<Data> dataList) {
         StringBuilder result = new StringBuilder();
         dataList.forEach((data) ->
-                result.append(data.getUserId()).append(" ")
+                result.append(port2IdMap.get(data.getPort())).append(" ")
                         .append(formatTime(data.getSendDate())).append("\n").
                         append(data.getContent()).append("\n\n"));
         return result.toString();
