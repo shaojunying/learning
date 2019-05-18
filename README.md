@@ -14,7 +14,7 @@ Java实现的多人聊天系统
 
 #### 客户端
 
-![client1](img\client1.png)
+![client1](img/client1.png)
 
 ![client2](img/client2.png)
 
