@@ -121,10 +121,11 @@ public class Helper {
      * */
     public static String dataListToString(Map<Integer, String> port2IdMap, List<Data> dataList) {
         StringBuilder result = new StringBuilder();
-        dataList.forEach((data) ->
-                result.append(port2IdMap.get(data.getPort())).append(" ")
+        dataList.forEach((data) -> {
+            result.append(port2IdMap.get(data.getPort())).append(" ")
                         .append(formatTime(data.getSendDate())).append("\n").
-                        append(data.getContent()).append("\n\n"));
+                    append(data.getContent()).append("\n\n");
+        });
         return result.toString();
     }
 

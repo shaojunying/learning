@@ -15,43 +15,53 @@ public class Data implements Serializable {
     /*
      * 指定消息的类型,默认存储的是聊天记录
      * */
-    private MessageType messageType = MessageType.MESSAGE;
+    MessageType messageType = MessageType.PUBLIC_MESSAGE;
     private String userId;
     private String content;
     private Date sendDate;
     private int port;
     private Map<Integer, String> Port2IdMap;
 
+    /*
+     * 向客户端发送用户列表信息
+     * */
     public Data(MessageType messageType, Map<Integer, String> Port2IdMap) {
-        /*
-         * 向客户端发送用户列表信息
-         * */
         this.messageType = messageType;
         this.Port2IdMap = Port2IdMap;
     }
 
-
+    /*
+     * 客户端建立连接
+     * */
     public Data(MessageType messageType, String userId) {
-        /*
-         * 客户端建立连接
-         * */
         this.messageType = messageType;
         this.userId = userId;
     }
 
-    public Data(int port, String content, Date sendDate) {
-        /*
-         * 向客户端发送某一条聊天记录
-         * */
+    /*
+     * 向客户端发送某一条聊天记录
+     * messageType: PUBLIC_MESSAGE 群聊
+     * messageType: PRIVATE_MESSAGE 私聊
+     * port: 改聊天记录的发起人
+     * */
+    public Data(MessageType messageType, int port, String content, Date sendDate) {
+        this.messageType = messageType;
         this.port = port;
         this.content = content;
         this.sendDate = sendDate;
     }
 
-    public Data(String content) {
-        // 客户端产生一条聊天记录,发送给服务器
+    /*
+     * 客户端产生一条聊天记录,发送给服务器
+     * messageType: PUBLIC_MESSAGE 群聊
+     * messageType: PRIVATE_MESSAGE 私聊
+     * port: 私聊为目标地址端口,公聊无意义
+     */
+    public Data(MessageType messageType, String content, int port) {
+        this.messageType = messageType;
         this.content = content;
         sendDate = Calendar.getInstance().getTime();
+        this.port = port;
     }
 
     public int getPort() {

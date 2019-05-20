@@ -5,6 +5,8 @@ import Utils.MessageType;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
@@ -13,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
  * Created by shao on 2018/12/9.
  */
 public class Client {
@@ -23,6 +24,9 @@ public class Client {
     private List<Data> dataList = new LinkedList<>();
     // 用来存储在线的用户列表
     private Map<Integer, String> port2IdMap = new HashMap<>();
+    private Map<Integer, JTextArea> port2textArea = new HashMap<>();
+    private Map<Integer, List<Data>> port2ChatRecord = new HashMap<>();
+
 
 
     private Client() throws IOException {
@@ -31,7 +35,7 @@ public class Client {
         // 给frame换一个样式
         JFrame.setDefaultLookAndFeelDecorated(true);
 
-        JFrame frame = new JFrame("客户端");
+        JFrame frame = new JFrame("群聊客户端");
         Container container = frame.getContentPane();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -43,7 +47,25 @@ public class Client {
 
 
         // 显示用户列表
-        JTextArea userListArea = createTextAreaWithScroller(container, 410, 45, 100, 360);
+        JList<String> userJList = createJListWithScroller(container, 410, 45, 100, 360);
+        userJList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JList jList = (JList) e.getSource();
+                if (e.getClickCount() == 2) {
+                    MyListModel myListModel = (MyListModel) jList.getModel();
+                    // 获取选择的下标
+                    int index = jList.getSelectedIndex();
+                    int port = myListModel.getPortAt(index);
+                    if (port == client.getPort()) {
+                        System.out.println("识图给自己建立私聊,失败...");
+                        return;
+                    }
+                    System.out.println("准备建立私聊");
+//                    establishPrivateChat(port);
+                }
+            }
+        });
 
         // 显示用户名
         JTextArea userIdArea = new JTextArea();
@@ -83,12 +105,13 @@ public class Client {
         // 点击发送之后将信息发送给服务端
         submit.addActionListener(event -> {
             String content = textArea.getText();
+            textArea.setText("");
             try {
                 assert content != null;
                 content = content.trim();
                 if (content.length() == 0)
                     return;
-                Helper.sendData(client, new Data(content));
+                Helper.sendData(client, new Data(MessageType.PUBLIC_MESSAGE, content, -1));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -101,8 +124,74 @@ public class Client {
         frame.setVisible(true);
 
         // 从服务器段接受信息
-        ReadThread readThread = new ReadThread(chatRecordArea, userListArea);
+        ReadThread readThread = new ReadThread(chatRecordArea, userJList);
         new Thread(readThread).start();
+    }
+
+    /*
+     * 建立私聊
+     * */
+    private JTextArea establishPrivateChat(int port) {
+        JFrame frame = new JFrame("私聊客户端");
+        Container container = frame.getContentPane();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        /*显示用户的聊天记录*/
+        JTextArea chatRecordArea = createTextAreaWithScroller(container, 10, 10, 400, 400);
+        // 保证滚动条在最下面
+        DefaultCaret caret = (DefaultCaret) chatRecordArea.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+
+
+        // 用户输入文本的文本框
+        JTextArea textArea = new JTextArea();
+        textArea.setBounds(10, 450, 390, 30);
+        container.add(textArea);
+
+
+        // 发送按钮
+        JButton submit = new JButton("发送");
+        submit.setBounds(410, 450, 60, 30);
+        frame.getContentPane().add(submit);
+        // 点击发送之后将信息发送给服务端
+        submit.addActionListener(event -> {
+            String content = textArea.getText();
+            textArea.setText("");
+            try {
+                assert content != null;
+                content = content.trim();
+                if (content.length() == 0)
+                    return;
+                Data data = new Data(MessageType.PRIVATE_MESSAGE, content, port);
+                Helper.sendData(client, data);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        // 显示窗口
+        frame.setSize(600, 600);
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(null);
+        frame.setVisible(true);
+        return chatRecordArea;
+    }
+
+    private JList<String> createJListWithScroller(Container container, int x, int y, int width, int height) {
+        JScrollPane ScrollPanel = new JScrollPane();
+        ScrollPanel.setBounds(x, y, width, height);
+        container.add(ScrollPanel);
+
+        MyListModel myListModel = new MyListModel();
+        JList<String> stringJList = new JList<>(myListModel);
+        stringJList.setBounds(x, y, width, height);
+        // 将JList设置为只能单选
+        stringJList.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        container.add(stringJList);
+        ScrollPanel.setViewportView(stringJList);
+
+        return stringJList;
     }
 
     @Override
@@ -143,17 +232,20 @@ public class Client {
         Helper.sendData(client, new Data(MessageType.ESTABLISH, userId));
     }
 
+    /*
+     * 从服务器获取数据
+     * */
     class ReadThread implements Runnable{
         private final JTextArea textArea;
-        private final JTextArea userListArea;
-        /*
-        * 从服务器中获取数据
-        * */
+        private final JList<String> userJList;
 
-        ReadThread(JTextArea textArea, JTextArea userListArea) {
+        /*
+         * 从服务器中获取数据
+         * */
+        ReadThread(JTextArea textArea, JList<String> userJList) {
             // 将获取的文本追加进该textArea中
             this.textArea = textArea;
-            this.userListArea = userListArea;
+            this.userJList = userJList;
         }
 
         @Override
@@ -168,19 +260,39 @@ public class Client {
                 }
                 assert data != null;
                 if (data.getMessageType() == MessageType.USER_INFO) {
-                    StringBuffer userListString = new StringBuffer();
+                    // 更新用户列表
                     port2IdMap = data.getPort2IdMap();
-                    port2IdMap.forEach((port, userId) -> {
-                        userListString.append(userId).append("\n");
-                    });
-                    userListArea.setText(userListString.toString());
+                    MyListModel myListModel = (MyListModel) userJList.getModel();
+                    System.out.println("收到的用户列表信息是" + port2IdMap.toString());
+                    myListModel.setPort2IdMap(port2IdMap);
+                    userJList.updateUI();
+
+                    // 更新聊天记录
                     String showText = Helper.dataListToString(port2IdMap, dataList);
                     textArea.setText(showText);
-                    continue;
+                } else if (data.getMessageType() == MessageType.PRIVATE_MESSAGE) {
+                    // 收到私聊消息
+                    // 判断是否有与该消息对应的窗口
+                    JTextArea chatRecordArea = port2textArea.getOrDefault(data.getPort(), null);
+                    if (chatRecordArea == null) {
+                        // 创建一个与改端口私聊的窗口
+//                        chatRecordArea = establishPrivateChat(data.getPort());
+                    }
+                    // 取得该端口对应的聊天记录数组
+                    List<Data> chatRecordList = port2ChatRecord.getOrDefault(data.getPort(), null);
+                    if (chatRecordList == null) {
+                        port2ChatRecord.put(data.getPort(), new LinkedList<>());
+                        chatRecordList = port2ChatRecord.get(data.getPort());
+                    }
+                    chatRecordList.add(data);
+                    String showText = Helper.dataListToString(port2IdMap, chatRecordList);
+                    chatRecordArea.setText(showText);
+                } else {
+                    // 更新群聊聊天记录
+                    dataList.add(data);
+                    String showText = Helper.dataListToString(port2IdMap, dataList);
+                    textArea.setText(showText);
                 }
-                dataList.add(data);
-                String showText = Helper.dataListToString(port2IdMap, dataList);
-                textArea.setText(showText);
             }
         }
     }

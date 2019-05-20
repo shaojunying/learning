@@ -38,6 +38,7 @@ public class Server {
     }
 
     public static class ServerThread implements Runnable{
+        // 当前监听的客户端
         private Socket client;
         boolean flag;
 
@@ -63,15 +64,39 @@ public class Server {
                     } catch (IOException e) {
                         flag = false;
                     }
-                    if (data != null){
-                        if (data.getMessageType() == MessageType.ESTABLISH) {
-                            clientMap.put(client, data.getUserId());
-                            System.out.printf("客户端%d用户名改为[%s]\n", client.getPort(), data.getUserId());
-                            sendUserList();
-                            continue;
-                        }
+                    if (data == null) {
+                        continue;
+                    }
+                    if (data.getMessageType() == MessageType.ESTABLISH) {
+                        /*
+                         * 客户端请求建立连接或改名
+                         * */
+                        clientMap.put(client, data.getUserId());
+                        System.out.printf("客户端%d用户名改为[%s]\n", client.getPort(), data.getUserId());
+                        sendUserList();
+                    } else if (data.getMessageType() == MessageType.PRIVATE_MESSAGE) {
+                        /*
+                         * 客户端发出私聊消息
+                         * */
+                        Data sendData = new Data(MessageType.PRIVATE_MESSAGE, client.getPort(), data.getContent(), data.getSendDate());
+                        Data finalData = data;
+                        clientMap.forEach((socket, userId) -> {
+                            if (socket.getPort() == finalData.getPort()) {
+                                try {
+                                    // 向客户端发送私聊消息
+                                    Helper.sendData(socket, sendData);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    } else {
+                        /*
+                         * 客户端发出群聊消息
+                         * */
                         String userId = clientMap.get(client);
-                        Data sendData = new Data(client.getPort(), data.getContent(), data.getSendDate());
+                        Data sendData = new Data(MessageType.PUBLIC_MESSAGE,
+                                client.getPort(), data.getContent(), data.getSendDate());
                         System.out.printf("客户端%d(用户名%s)发消息[%s]\n", client.getPort(), userId, data.getContent());
                         clientMap.forEach((receiverSocket, receiverUserId) -> {
                             try {
