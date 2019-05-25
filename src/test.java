@@ -1,39 +1,29 @@
-import java.util.HashMap;
+import com.alibaba.fastjson.JSON;
+
+import java.io.IOException;
+import java.net.Socket;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
- * Created by shao on 2019/5/18 11:33.
+ * Created by shao on 2019/5/24 17:47.
  */
 public class test {
-    public static void main(String[] args) {
-        // 给frame换一个样式
-//        JFrame.setDefaultLookAndFeelDecorated(true);
-//
-//        JFrame frame = new JFrame("test");
-//        Container container = frame.getContentPane();
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        String[] words= { "quick", "brown", "hungry", "wild"};
-//        JList<String> stringJList = new JList<>(words);
-//        stringJList.setBounds(10, 10, 390, 500);
-//        container.add(stringJList);
-//        JButton button = new JButton("shao");
-//        button.setBounds(410, 450, 100, 30);
-//        container.add(button);
-//
-//
-//        // 显示窗口
-//        frame.setSize(600, 600);
-//        frame.setLocationRelativeTo(null);
-//        frame.setLayout(null);
-//        frame.setVisible(true);
+    public static void main(String[] args) throws IOException {
 
-        Map<Integer, LinkedList<String>> map = new HashMap<>();
-        map.put(1, new LinkedList<>());
-        List<String> stringList = map.get(1);
-        stringList.add("111");
-        System.out.println(map.get(1));
+        Socket socket = new Socket("",20001);
+        Socket socket1 = new Socket("",20001);
+        System.out.println(socket);
+        System.out.println(socket1);
+        System.out.println(socket.equals(socket1));
 
+//        LinkedList<String> stringLinkedList = new LinkedList<>();
+//        stringLinkedList.add("111");
+//        Data data = new Data(
+//                stringLinkedList
+//        );
+//        String string = JSON.toJSONString(data);
+//        System.out.println(string);
+//        Data data1 = JSON.parseObject(string, Data.class);
+//        System.out.println(data1);
     }
 }
