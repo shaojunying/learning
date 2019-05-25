@@ -5,6 +5,8 @@ import Utils.MessageType;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -16,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
  * Created by shao on 2018/12/9.
  */
 public class Client {
@@ -38,7 +39,7 @@ public class Client {
         // 给frame换一个样式
         JFrame.setDefaultLookAndFeelDecorated(true);
 
-        JFrame frame = new JFrame("客户端");
+        JFrame frame = new JFrame("群聊客户端");
         Container container = frame.getContentPane();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -50,7 +51,25 @@ public class Client {
 
 
         // 显示用户列表
-        JTextArea userListArea = createTextAreaWithScroller(container, 410, 45, 100, 360);
+        JList<String> userJList = createJListWithScroller(container, 410, 45, 100, 360);
+        userJList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JList jList = (JList) e.getSource();
+                if (e.getClickCount() == 2) {
+                    MyListModel myListModel = (MyListModel) jList.getModel();
+                    // 获取选择的下标
+                    int index = jList.getSelectedIndex();
+                    int port = myListModel.getPortAt(index);
+                    if (port == client.getPort()) {
+                        System.out.println("识图给自己建立私聊,失败...");
+                        return;
+                    }
+                    System.out.println("准备建立私聊");
+//                    establishPrivateChat(port);
+                }
+            }
+        });
 
         // 显示用户名
         JTextArea userIdArea = new JTextArea();
@@ -90,6 +109,7 @@ public class Client {
         // 点击发送之后将信息发送给服务端
         submit.addActionListener(event -> {
             String content = textArea.getText();
+            textArea.setText("");
             try {
                 assert content != null;
                 textArea.setText("");
@@ -124,7 +144,7 @@ public class Client {
         frame.setVisible(true);
 
         // 从服务器段接受信息
-        ReadThread readThread = new ReadThread(chatRecordArea, userListArea);
+        ReadThread readThread = new ReadThread(chatRecordArea, userJList);
         new Thread(readThread).start();
 
         // 从其他客户端接受UDP消息
@@ -185,6 +205,9 @@ public class Client {
         Helper.sendData(server, message);
     }
 
+    /*
+     * 从服务器获取数据
+     * */
     class ReadThread implements Runnable{
         private final JTextArea textArea;
         private final JTextArea userListArea;
@@ -194,7 +217,7 @@ public class Client {
         ReadThread(JTextArea textArea, JTextArea userListArea) {
             // 将获取的文本追加进该textArea中
             this.textArea = textArea;
-            this.userListArea = userListArea;
+            this.userJList = userJList;
         }
 
         @Override
