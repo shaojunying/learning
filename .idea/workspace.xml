@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4be6b3ec-0514-46c3-bbf2-b4813e0ea7b6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/MyListModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Utils/Data.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/Data.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Utils/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/Helper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Utils/MessageType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/MessageType.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />

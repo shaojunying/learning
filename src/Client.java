@@ -112,13 +112,12 @@ public class Client {
             textArea.setText("");
             try {
                 assert content != null;
+                textArea.setText("");
                 content = content.trim();
                 if (content.length() == 0)
                     return;
-                System.out.println(address2IdMap);
                 for (Map.Entry<String,String> user : address2IdMap.entrySet()){
                     String receiverAddress = user.getKey();
-                    System.out.println(receiverAddress);
                     String[] temp = receiverAddress.split(":");
                     assert temp.length == 2;
                     String ip = temp[0];
@@ -132,8 +131,6 @@ public class Client {
                     byte[] buffer = Helper.encodeData(message);
                     DatagramPacket datagramPacket = new DatagramPacket(buffer,buffer.length,InetAddress.getByName(ip),port);
                     datagramSocket.send(datagramPacket);
-                    System.out.println("发送的message: "+message);
-                    System.out.println("成功发送udp数据");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -161,7 +158,6 @@ public class Client {
                     e.printStackTrace();
                 }
                 Message message = (Message) Helper.decodeData(buffer);
-                System.out.println("收到的"+message);
                 if (message.getMessageType().equals(MessageType.MESSAGE)){
                     // 接受到消息
                     messageList.add(message);
@@ -236,7 +232,6 @@ public class Client {
                 }
                 assert message != null;
                 if (message.getMessageType() == MessageType.USER_LIST) {
-                    System.out.println(message);
                     // 获取到用户列表
                     StringBuffer userListString = new StringBuffer();
                     address2IdMap = message.getAddress2IdMap();
