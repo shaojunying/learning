@@ -1,4 +1,4 @@
-import Utils.Data;
+import Utils.Message;
 import Utils.Helper;
 import Utils.MessageType;
 
@@ -6,6 +6,9 @@ import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -17,17 +20,21 @@ import java.util.Map;
  * Created by shao on 2018/12/9.
  */
 public class Client {
-    private Socket client;
+    // 服务器
+    private Socket server;
+    private DatagramSocket datagramSocket;
 
     // 用来存储聊天记录
-    private List<Data> dataList = new LinkedList<>();
+    private List<Message> messageList = new LinkedList<>();
     // 用来存储在线的用户列表
-    private Map<Integer, String> port2IdMap = new HashMap<>();
-
+    private Map<String, String> address2IdMap = new HashMap<>();
 
     private Client() throws IOException {
-        client = new Socket(Helper.serverIp, Helper.serverPort);
+        server = new Socket(Helper.serverIp, Helper.serverPort);
+        datagramSocket = new DatagramSocket(server.getLocalPort());
+    }
 
+    private void start() throws IOException {
         // 给frame换一个样式
         JFrame.setDefaultLookAndFeelDecorated(true);
 
@@ -88,7 +95,26 @@ public class Client {
                 content = content.trim();
                 if (content.length() == 0)
                     return;
-                Helper.sendData(client, new Data(content));
+                System.out.println(address2IdMap);
+                for (Map.Entry<String,String> user : address2IdMap.entrySet()){
+                    String receiverAddress = user.getKey();
+                    System.out.println(receiverAddress);
+                    String[] temp = receiverAddress.split(":");
+                    assert temp.length == 2;
+                    String ip = temp[0];
+                    int port = Integer.parseInt(temp[1]);
+                    // 构造要发送的消息
+                    Message message = new Message();
+                    message.setContent(content);
+                    // 这里设置发送者的地址
+                    String sendAddress = server.getLocalAddress().getHostAddress()+":"+server.getLocalPort();
+                    message.setAddress(sendAddress);
+                    byte[] buffer = Helper.encodeData(message);
+                    DatagramPacket datagramPacket = new DatagramPacket(buffer,buffer.length,InetAddress.getByName(ip),port);
+                    datagramSocket.send(datagramPacket);
+                    System.out.println("发送的message: "+message);
+                    System.out.println("成功发送udp数据");
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -103,16 +129,32 @@ public class Client {
         // 从服务器段接受信息
         ReadThread readThread = new ReadThread(chatRecordArea, userListArea);
         new Thread(readThread).start();
-    }
 
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        client.close();
+        // 从其他客户端接受UDP消息
+        new Thread(() -> {
+            while (true){
+                byte[] buffer = new byte[1024];
+                DatagramPacket datagramPacket = new DatagramPacket(buffer,buffer.length);
+                try {
+                    datagramSocket.receive(datagramPacket);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Message message = (Message) Helper.decodeData(buffer);
+                System.out.println("收到的"+message);
+                if (message.getMessageType().equals(MessageType.MESSAGE)){
+                    // 接受到消息
+                    messageList.add(message);
+                    String showText = Helper.dataListToString(address2IdMap, messageList);
+                    chatRecordArea.setText(showText);
+                }
+            }
+        }).start();
     }
 
     public static void main(String[] args) throws Exception {
-        new Client();
+        Client client = new Client();
+        client.start();
     }
 
     /*
@@ -140,7 +182,11 @@ public class Client {
     private void sendNewUserId(String userId) throws IOException {
         // 取出新设置的userId前后的空白字符
         userId = userId.trim();
-        Helper.sendData(client, new Data(MessageType.ESTABLISH, userId));
+        Message message = new Message();
+        message.setMessageType(MessageType.ESTABLISH);
+        message.setUserId(userId);
+        // 将新设置的数据发送给服务器
+        Helper.sendData(server, message);
     }
 
     class ReadThread implements Runnable{
@@ -149,7 +195,6 @@ public class Client {
         /*
         * 从服务器中获取数据
         * */
-
         ReadThread(JTextArea textArea, JTextArea userListArea) {
             // 将获取的文本追加进该textArea中
             this.textArea = textArea;
@@ -160,27 +205,26 @@ public class Client {
         public void run() {
             // 从server接受数据
             while (true) {
-                Data data = null;
+                Message message = null;
                 try {
-                    data = Helper.receiveData(client);
+                    message = Helper.receiveData(server);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                assert data != null;
-                if (data.getMessageType() == MessageType.USER_INFO) {
+                assert message != null;
+                if (message.getMessageType() == MessageType.USER_LIST) {
+                    System.out.println(message);
+                    // 获取到用户列表
                     StringBuffer userListString = new StringBuffer();
-                    port2IdMap = data.getPort2IdMap();
-                    port2IdMap.forEach((port, userId) -> {
-                        userListString.append(userId).append("\n");
-                    });
+                    address2IdMap = message.getAddress2IdMap();
+                    address2IdMap.forEach((socket, userId) -> userListString.append(userId).append("\n"));
+                    // 更新在线用户列表中的用户名
                     userListArea.setText(userListString.toString());
-                    String showText = Helper.dataListToString(port2IdMap, dataList);
+
+                    // 更新聊天记录中的用户名
+                    String showText = Helper.dataListToString(address2IdMap, messageList);
                     textArea.setText(showText);
-                    continue;
                 }
-                dataList.add(data);
-                String showText = Helper.dataListToString(port2IdMap, dataList);
-                textArea.setText(showText);
             }
         }
     }

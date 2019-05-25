@@ -25,7 +25,7 @@ public class Helper {
     /*
      * 将对象转化为byte数组
      * */
-    private static byte[] encodeData(Object object) throws IOException {
+    public static byte[] encodeData(Object object) throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(bos);
         oos.writeObject(object);
@@ -53,19 +53,19 @@ public class Helper {
     /*
      * 向指定socket发送数据
      * */
-    public static void sendData(Socket socket, Data data) throws IOException {
+    public static void sendData(Socket socket, Message message) throws IOException {
         DataOutputStream dos = getSocketOutput(socket);
-        dos.write(Helper.encodeData(data));
+        dos.write(Helper.encodeData(message));
     }
 
     /*
      * 从指定socket接受数据
      * */
-    public static Data receiveData(Socket socket) throws IOException {
+    public static Message receiveData(Socket socket) throws IOException {
         DataInputStream dis = getSocketInput(socket);
         byte[] bytes = new byte[maxMessageLength];
         dis.read(bytes);
-        return (Data) decodeData(bytes);
+        return (Message) decodeData(bytes);
     }
 
     /*
@@ -119,12 +119,12 @@ public class Helper {
     /*
      * 将聊天记录的dataList转化为String进行显示
      * */
-    public static String dataListToString(Map<Integer, String> port2IdMap, List<Data> dataList) {
+    public static String dataListToString(Map<String, String> address2IdMap, List<Message> messageList) {
         StringBuilder result = new StringBuilder();
-        dataList.forEach((data) ->
-                result.append(port2IdMap.get(data.getPort())).append(" ")
-                        .append(formatTime(data.getSendDate())).append("\n").
-                        append(data.getContent()).append("\n\n"));
+        messageList.forEach((message) ->
+                result.append(address2IdMap.get(message.getAddress())).append(" ")
+                        .append(formatTime(message.getSendDate())).append("\n").
+                        append(message.getContent()).append("\n\n"));
         return result.toString();
     }
 
