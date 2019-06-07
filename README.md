@@ -21,18 +21,31 @@ Java实现的多人聊天系统
 ### 运行截图
 
 注册成功后的客户端效果
+
 ![注册成功的客户端](img/sip/register_client.png)
+
 注册成功后的服务端效果
+
 ![注册成功的服务端](img/sip/register_server.png)
+
 给自己发送私聊消息
+
 ![给自己发送私聊消息](img/sip/chat_self.png)
+
 给他人发送私聊消息
+
 ![给他人发送私聊消息](img/sip/chat_other.png)
+
 发送群聊消息
+
 ![发送群聊消息](img/sip/chat_public.png)
+
 一个客户端退出之后后面的用户列表刷新
+
 ![一个客户端退出之后后面的用户列表刷新](img/sip/quit.png)
+
 一个客户端退出之后仍可正常发送消息
+
 ![一个客户端退出之后仍可正常发送消息](img/sip/quit_message.png)
 
 
