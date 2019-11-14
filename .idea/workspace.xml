@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d82516ae-ad38-49ed-8038-3f39296fb9f1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/pytorch_learning.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -44,7 +45,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="settings.github" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -67,11 +68,14 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.回归问题实战 (1)">
+  <component name="RunManager" selected="Python.pytorch_learning">
     <configuration name="回归问题实战 (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="neural_network_learning" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/回归问题实战" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -131,7 +135,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="data-introduction" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="pytorch" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="neural_network_learning" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -144,16 +148,16 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data-introduction.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\shao\Documents\codingProject\neural_network_learning\pytorch_learning.py" />
       <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="neuron" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="pytorch_learning" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="neural_network_learning" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -166,9 +170,9 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="C:\Users\shao\Documents\codingProject\neural_network_learning\data-introduction.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pytorch_learning.py" />
       <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
@@ -199,11 +203,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.pytorch_learning" />
+        <item itemvalue="Python.pytorch" />
         <item itemvalue="Python.回归问题实战 (1)" />
         <item itemvalue="Python.回归问题实战" />
         <item itemvalue="Python.test" />
-        <item itemvalue="Python.data-introduction" />
-        <item itemvalue="Python.neuron" />
       </list>
     </recent_temporary>
   </component>
@@ -232,6 +236,9 @@
       <workItem from="1548952740314" duration="26000" />
       <workItem from="1569746577688" duration="3474000" />
       <workItem from="1569750080978" duration="7594000" />
+      <workItem from="1569817384350" duration="4160000" />
+      <workItem from="1570337299662" duration="43000" />
+      <workItem from="1573735680463" duration="612000" />
     </task>
     <task id="LOCAL-00001" summary="通过梯度下降算法练习了如何拟合回归问题">
       <created>1569760789687</created>
