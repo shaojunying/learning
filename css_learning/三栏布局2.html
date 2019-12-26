@@ -1,0 +1,31 @@
+<!-- 使用position定位中的absolute属性实现,左右两栏使用position定位,中间用margin -->
+<!-- 优点:html结构正常
+缺点:当父元素有内外边距的时候,中间栏会有偏差 -->
+<style>
+    .left{
+        background: red;
+        width: 200px;
+        height: 300px;
+        position: absolute;
+        /* 意味着放在左上角 */
+        top: 0;
+        left: 0;
+    }
+    .middle{
+        height: 300px;
+        margin:0 220px;
+        background: yellow;
+    }
+    .right{
+        height: 300px;
+        width: 200px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: green;
+    }
+</style>
+
+<div class="left">左栏</div>
+<div class="middle">中间栏</div>
+<div class="right">右栏</div>
