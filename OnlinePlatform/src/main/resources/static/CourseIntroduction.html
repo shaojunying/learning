@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>在线平台</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <style>
+        body {
+            font-family: "Lato", sans-serif;
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 248px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #f1f1f1;
+            overflow-x: hidden;
+            padding-top: 50px;
+        }
+
+        .sidenav a {
+            margin-left: 16px;
+            width: 215px;
+            padding: 16px 16px 16px 16px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #000000;
+            display: block;
+            background-color: white;
+            border: 52px #000000;
+        }
+
+        .sidenav a:hover {
+            color: #2494ef;
+        }
+
+        .main {
+            margin-left: 248px; /* 与sidenav的宽度相同 */
+            font-size: 28px; /* 字体放大，让页面可滚动 */
+            padding: 0px 10px;
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidenav {padding-top: 15px;}
+            .sidenav a {font-size: 18px;}
+        }
+    </style>
+</head>
+<body style="background-color: #f1f1f1">
+<nav class="navbar navbar-default" role="navigation" style=" background-color:#2494ef; box-shadow: 0px 0px 6px #000; height: 50px;border: 0px">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#" style="color: white;">软件项目管理在线学习平台</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li><a class="navbar-brand" href="#" style="color: white;font-size: 20px">| 课程</a></li>
+            </ul>
+        </div>
+        <div style="margin-left: 1750px">
+            <ul class="nav navbar-nav">
+                <li><a class="navbar-brand" href="#" style="color: white;font-size: 20px">个人中心</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="panel panel-default" id="title" style="margin-left:auto;margin-right:auto;width:1000px">
+    <div class="panel-body" style="font-size:40px">
+        <div id="name"></div>
+        <button type="button" onclick="chooseCourse()" class="btn btn-warning" style="background-color: #fe900d;width: 200px;">开始学习</button>
+    </div>
+    <div class="panel-footer" style="font-size:20px">
+        老师: <div id="teacher"></div>
+        学时: <div id="length"></div>
+    </div>
+    <img src="course.jpg" alt="通用的占位符缩略图" width="200px" height="150px" style="object-fit: cover">
+    <div id="description"></div>
+</div>
+<nav class="navbar navbar-default" role="navigation" style="margin-left:auto;margin-right:auto;width:1000px">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#" style="font-size:25px">课程详情</a>
+        </div>
+    </div>
+</nav>
+<div class="panel panel-default" style="margin-left:auto;margin-right:auto;width:1000px">
+    <div class="panel-body" style="font-size:25px">
+        课程概述
+    </div>
+    <div class="panel-footer" id="overview" style="font-size:16px">    </div>
+
+    <div class="panel-body" style="font-size:25px">
+        授课目标
+    </div>
+    <div class="panel-footer" id="target" style="font-size:16px">
+    </div>
+
+    <div class="panel-body" style="font-size:25px">
+        课程大纲
+    </div>
+    <div class="panel-footer" id="outline" style="font-size:16px">
+    </div>
+</div>
+</body>
+<script>
+    let courseId = sessionStorage.getItem("courseId");
+    console.log(courseId);
+    if (courseId==null){
+        console.log("no courseId");
+        courseId=1;
+    }
+    $.ajax({
+        async:false,
+        type:"GET",
+        dataType: "json",
+        url: 'course/'+courseId,
+        error : function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest);
+            console.log(textStatus);
+            console.log(errorThrown);
+        },
+        success: function (response) {
+            let courseIntro = response.data;
+            $("#name").append(courseIntro.name);
+            $("#teacher").append(courseIntro.teacher);
+            $("#length").append(courseIntro.length);
+            $("#description").append(courseIntro.description);
+            $("#overview").append(courseIntro.overview);
+            $("#target").append(courseIntro.target);
+            $("#outline").append(courseIntro.outline);
+        }
+    });
+
+    function chooseCourse() {
+        $.ajax({
+            async:false,
+            type:"POST",
+            dataType: "json",
+            data:{
+                "token":$.cookie("token"),
+                "courseId":courseId
+            },
+            url: 'course',
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrown);
+            },
+            success: function (response) {
+                if (response.rspCode==="0000"){
+                    window.location.href="StuCourse.html";
+                }
+                else {
+                    console.log(response)
+                }
+            }
+        })
+    }
+
+</script>
+</html>

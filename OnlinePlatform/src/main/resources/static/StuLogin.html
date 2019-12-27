@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>在线平台</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+</head>
+<body style="background-color: #f1f1f1">
+    <nav class="navbar navbar-default" role="navigation" style=" background-color:#2494ef; box-shadow: 0px 0px 6px #000; height: 50px;border: 0px">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html" style="color: white;">软件项目管理在线学习平台</a>
+            </div>
+            <div style="margin-left: 860px;">
+                <ul class="nav navbar-nav">
+                    <li><ta class="navbar-brand" style="color: white;font-size: x-large">Sign in - Student</ta></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br><br><br>
+    <h4 style="margin-left: 880px">Finish your account</h4>
+    <div style="margin: 0 auto;border: 1px; width: 600px; height: 300px; background-color: white;border-radius: 6px 6px 6px 6px;
+                box-shadow: #666 0px 1px 2px; ">
+        <br><br><br>
+        <input id="id" type="text" class="form-control" placeholder="学号" style="width:350px;margin: 0 auto;"><br><br>
+        <input id="password" type="password" class="form-control" placeholder="密码" style="width:350px;margin: 0 auto;"><br><br>
+        <button type="button" onclick="login()" class="btn btn-primary btn-lg"data-toggle="button" style="width:205px;margin-left:200px;background-color: #2494ef">确认</button>
+    </div>
+</body>
+
+<script>
+    function login() {
+        let $id = $("#id");
+        let $password = $("#password");
+        $.ajax({
+            async:false,
+            type:"POST",
+            dataType: "json",
+            data:{
+                'uid':$id.val(),
+                'password':$password.val()
+            },
+            url: 'users/login',
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrown);
+            },
+            success: function (response) {
+                console.log($id.val());
+                if (response.rspCode === '0000'){
+                    $.cookie("token",response.data.token);
+                    window.location.href="StuInfo.html";
+                }
+                else {
+                    console.log(response);
+                }
+            }
+        });
+    }
+
+</script>
+
+</html>

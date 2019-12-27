@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>在线平台</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body style="background-color: #f1f1f1">
+    <nav class="navbar navbar-default" role="navigation" style=" background-color:#2494ef; box-shadow: 0px 0px 6px #000; height: 50px;border: 0px">
+        <div class="container-fluid">
+            <div class="navbar-header" style="margin-left: 0px;">
+                <a class="navbar-brand" href="index.html" style="color: white;">软件项目管理在线学习平台</a>
+            </div>
+            <div style="margin-left: 900px;">
+                <ul class="nav navbar-nav">
+                    <li><ta class="navbar-brand" href="#" style="color: white;font-size: x-large">Sign up</ta></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br><br><br>
+    <h4 style="margin-left: 880px">Finish your account</h4>
+    <form style="margin: 0 auto;border: 1px; width: 600px; height: 450px; background-color: white;border-radius: 6px 6px 6px 6px;
+                    box-shadow: #666 0px 1px 2px; ">
+        <br><br><br>
+        <input type="text" class="form-control" id="username" placeholder="学号/工号" style="width:350px;margin: 0 auto;"><br><br>
+        <input type="password" class="form-control" id="password" placeholder="密码" style="width:350px;margin: 0 auto;"><br><br>
+        <input type="password" class="form-control" id="password1" placeholder="确认密码" style="width:350px;margin: 0 auto;"><br><br>
+        <div class="btn-group" data-toggle="buttons" style="width:350px;margin-left:200px;">
+            <label class="btn btn-primary btn-lg" style="background-color: #2494ef">
+                <input type="radio" name="options" value="0" id="option1"> 我是学生
+            </label>
+            <label class="btn btn-primary btn-lg" style="background-color: #2494ef">
+                <input type="radio" name="options" value="1" id="option2" > 我是老师
+            </label>
+        </div>
+        <br><br><br>
+
+        <button onclick="register()" type="button" class="btn btn-primary btn-lg"data-toggle="button" style="width:205px;margin-left:200px;background-color: #2494ef">
+            确认</button>
+    </form>
+</body>
+<script>
+
+    function register() {
+        let username = $("#username").val();
+        let password = $("#password").val();
+        let password1 = $("#password1").val();
+        // 获取用户类型 是老师还是学生
+        let options = $("input[name='options']:checked").val();
+        if (!(password === password1)){
+            alert("两次密码不一致");
+            return false;
+        }
+
+        let data={
+            'uid':username,
+                'password':password,
+                'type':options
+        };
+        console.log(data);
+
+        $.ajax({
+            async:false,
+            type:"POST",
+            dataType: "json",
+            data:{
+                'uid':username,
+                'password':password,
+                'type':options
+            },
+            url: 'users/register',
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrown);
+            },
+            success: function (response) {
+                if (response.rspCode === '0000'){
+                    //注册成功
+                    if (options==1){
+                        //跳转到老师登陆页面
+                        window.location.href="TeaLogin.html";
+                    }
+                    else {
+                        //跳转到学生登录页
+                        window.location.href="StuLogin.html";
+                    }
+                }
+                else {
+                    console.log(response);
+                }
+            }
+        })
+    }
+
+</script>
+</html>

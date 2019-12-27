@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>在线平台</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            font-family: "Lato", sans-serif;
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 248px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #f1f1f1;
+            overflow-x: hidden;
+            padding-top: 50px;
+        }
+
+        .sidenav a {
+            margin-left: 16px;
+            width: 215px;
+            padding: 16px 16px 16px 16px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #000000;
+            display: block;
+            background-color: white;
+            border: 52px #000000;
+        }
+
+        .sidenav a:hover {
+            background-color: #2494ef;
+            color: #f1f1f1;
+        }
+
+        .main {
+            margin-left: 248px; /* 与sidenav的宽度相同 */
+            font-size: 28px; /* 字体放大，让页面可滚动 */
+            padding: 0px 10px;
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidenav {padding-top: 15px;}
+            .sidenav a {font-size: 18px;}
+        }
+    </style>
+</head>
+<body style="background-color: #f1f1f1">
+    <nav class="navbar navbar-default" role="navigation" style=" background-color:#2494ef; box-shadow: 0px 0px 6px #000; height: 50px;border: 0px">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html" style="color: white;">软件项目管理在线学习平台</a>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li><a class="navbar-brand" href="TeaNavigationPage.html" style="color: white;font-size: 20px">| 课程</a></li>
+                </ul>
+            </div>
+            <div style="margin-left: 1780px">
+                <ul class="nav navbar-nav">
+                    <li><a class="navbar-brand" href="TeaInfo.html" style="color: white;font-size: 20px">个人中心</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div style="position: fixed;z-index: -1;">
+        <div class="sidenav" style="box-shadow: 0px 0px 6px #000;">
+            <img src="bg.png" width="215px" height="170px" style="margin-left: 16px;margin-top: 10px; border-radius: 10px"/>
+            <h4>&emsp;头像</h4>
+            <a href="#about" style="margin-top: 10px">个人中心</a>
+
+        </div>
+        <div class="main">
+            <div class="panel panel-default" style="width:1600px">
+                <div class="panel-body">
+                    个人中心
+                </div>
+                <div class="panel-footer">
+                    <div style="padding: 100px 100px 10px;">
+                        <form class="bs-example bs-example-form" role="form">
+                            <div class="input-group input-group-lg">
+                                <input type="text" id="nickname" class="form-control" placeholder="昵称" style="height:50px;">
+                            </div>
+                            <br>
+                            <div class="input-group input-group-lg">
+                                <input type="text" id="email" class="form-control" placeholder="常用邮箱">
+                            </div>
+                            <br>
+                            <div class="input-group input-group-lg">
+                                <input type="text" id="uid" class="form-control" placeholder="学号">
+                            </div>
+                            <br>
+                            <div class="input-group input-group-lg">
+                                <input type="text" id="name" class="form-control" placeholder="真实姓名">
+                            </div>
+                            <br>
+                            <div class="input-group input-group-lg">
+                                <input type="text" id="phone" class="form-control" placeholder="手机号">
+                            </div>
+                            <br>
+                            <div class="form-group" style="width:500px;">
+                                <label>个人简介</label>
+                                <textarea id="info" class="form-control" rows="3" style="width: 700px; height: 150px;resize:none;font-size: 15px"></textarea>
+                            </div>
+                            <button onclick="changeInfo()" type="button" class="btn btn-primary btn-lg"data-toggle="button" style="width:205px;margin-left:200px;background-color: #2494ef">
+                                确认</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $.ajax({
+        async:false,
+        type:"Get",
+        dataType: "json",
+        data:{
+            'token':$.cookie("token")
+        },
+        url: 'users/info',
+        error : function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest);
+            console.log(textStatus);
+            console.log(errorThrown);
+        },
+        success: function (response) {
+            if (response.rspCode === '0000'){
+                let data = response.data;
+                $("#nickname").val(data.nickname);
+                $("#email").val(data.email);
+                $("#uid").val(data.uid);
+                $("#name").val(data.name);
+                $("#phone").val(data.phone);
+                $("#info").val(data.info);
+            }
+            else {
+                console.log(response);
+            }
+        }
+    });
+
+    function changeInfo() {
+        $.ajax({
+            async:false,
+            type:"PUT",
+            dataType: "json",
+            data:{
+                'token':$.cookie("token"),
+                "nickname":$("#nickname").val(),
+                "email":$("#email").val(),
+                "name":$("#name").val(),
+                "phone":$("#phone").val(),
+                "info":$("#info").val()
+            },
+            url: 'users/info',
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrown);
+            },
+            success: function (response) {
+                if (response.rspCode === '0000'){
+                    alert("修改成功");
+                }
+                else {
+                    console.log(response);
+                }
+            }
+        });
+    }
+</script>
+</html>
